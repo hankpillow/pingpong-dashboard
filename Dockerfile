@@ -7,6 +7,7 @@ RUN /entrypoint.sh \
 
 EXPOSE 8000
 
-# ADD ./api/pingpong.py .
+ADD ./server.py .
+ADD ./index.html .
 
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "server:pingpong"]

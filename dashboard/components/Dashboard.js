@@ -21,16 +21,12 @@ const Dashboard = ({data}) => {
 	if (data.length === 0) {
 
 		// Initial state
-		return ''
+		return '¯\\_(ツ)_/¯'
 
 	} else if (samples.length === 0 && errors.length){
 
 		// If only has errors
-		return (
-			<div className={'panel'}>
-				<ErrorList data={errors} />
-			</div>
-			)
+		return (<ErrorList data={errors} />)
 	}
 
 	return (

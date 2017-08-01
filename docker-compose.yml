@@ -1,8 +1,9 @@
 version: '3'
 
 services:
+
   core:
-    image: mrboots/pingpong
+    image: mrboots/pingpong:latest
     volumes:
       - ./URLS:/var/URLS
       - ./log:/var/log:rw
