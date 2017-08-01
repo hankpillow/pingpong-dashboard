@@ -37,7 +37,12 @@ const toDate = R.compose(
 /* return sorted list with only <prop> by <fn> */
 const sortByProp = (prop, fn = (a,b) => a > b) => R.compose(R.sort(fn), filterProp(prop))
 
+/* all data action are made for lists.
+ * for single units you can use the proxy*/
+const single = (fn, data) => fn([data])[0]
+
 export {
+	single,
 	filterError, filterSample, filterProp,
 	sortByProp,
 	toDate,
