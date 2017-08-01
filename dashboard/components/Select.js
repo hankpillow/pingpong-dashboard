@@ -16,6 +16,7 @@ const TimeRequest = ({status, load}) => {
 			disabled={status != ST.READY ? 'disabled' : ''}
 			action="/api/"
 		>
+			<input type="hidden" name="host" value="http://www.honda.com.br/motos/"/>
 			<label>
 				<select onChange={getSelected}>
 					<option value="">Select the range you want to inspect</option>
