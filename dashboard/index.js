@@ -1,29 +1,20 @@
 // libs
 import {h, render} from 'preact'
 import {Provider} from 'preact-redux'
-import thunk from 'redux-thunk'
-import {createStore, applyMiddleware, compose} from 'redux'
 
 // app
-import {reducer} from 'modules/store'
+import store from 'store'
 
 // components
-import Select from './components/Select'
-import Status from './components/Status'
-import Dashboard from './components/Dashboard'
-
-const middleware = window.__REDUX_DEVTOOLS_EXTENSION__ ?
-			compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__()) :
-			applyMiddleware(thunk)
-
-const store = createStore(reducer, {}, middleware)
+import AppStatus from './components/AppStatus'
+import TimeRange from './components/TimeRange'
+// import Dashboard from './components/Dashboard'
 
 render(
 	<Provider store={store}>
 		<main>
-			<Status />
-			<Select />
-			<Dashboard />
+			<AppStatus />
+			<TimeRange />
 		</main>
 	</Provider>
 , document.body)

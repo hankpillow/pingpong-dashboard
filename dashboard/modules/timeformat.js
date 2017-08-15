@@ -1,5 +1,3 @@
-import R from 'ramda'
-
 //@see https://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python
 //TODO allow int as args
 const pretty = (time, now = new Date()) => {
@@ -53,10 +51,9 @@ const pretty = (time, now = new Date()) => {
 }
 
 const WEEK_DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa']
-const tinyDate = R.map(date =>  {
-	if (!date) return ''
+const tinyDate = date =>  { if (!date) return ''
 	return `${WEEK_DAYS[date.getDay()]}${date.getDate()} ${date.getFullYear()}`
-})
+}
 
 //@full credits to https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php/6117889#6117889
 const getWeekNumber = date => {

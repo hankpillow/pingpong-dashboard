@@ -39,7 +39,7 @@ const sortByProp = (prop, fn = (a,b) => a > b) => R.compose(R.sort(fn), filterPr
 
 /* all data action are made for lists.
  * for single units you can use the proxy*/
-const single = (fn, data) => fn([data])[0]
+const single = R.curry((fn, data) => fn([data])[0])
 
 export {
 	single,

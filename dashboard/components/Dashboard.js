@@ -4,12 +4,11 @@ import {connect} from 'preact-redux'
 
 //modules
 import * as D from 'modules/data'
-import {actions} from 'modules/store'
+// import {actions} from 'modules/store'
 import {getUptime} from 'modules/insights'
-import {tinyDate, pretty} from 'modules/timeformat'
 
 //comps
-import ErrorList from './insights/ErrorList'
+import ErrorCard from './insights/ErrorCard'
 
 const Dashboard = ({data}) => {
 	data = data || []
@@ -18,28 +17,17 @@ const Dashboard = ({data}) => {
 	const errors = D.filterError(data)
 	const uptime = getUptime(samples)
 
-	if (data.length === 0) {
+	if (data.length === 0) return (<span>¯\_(ツ)_/¯</span>)
 
-		// Initial state
-		return '¯\\_(ツ)_/¯'
-
-	} else if (samples.length === 0 && errors.length){
-
-		// If only has errors
-		return (<ErrorList data={errors} />)
-	}
-
-	return (
-			<div className={'dashboard'}>
+	return (<div className={'dashboard'}>
 				<ul>
 					<li>uptime: {parseInt(uptime * 100)}%</li>
-					<li>samples: {samples.length}</li>
 				</ul>
 				<div className={'uptime-chcks'}>
 					<span>uptime checks:</span>
 					<span>{samples[0].date}</span>
 				</div>
-				<ErrorList data={errors} />
+				<ErrorCard data={errors} />
 			</div>
 	)
 }

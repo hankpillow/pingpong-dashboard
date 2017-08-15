@@ -1,6 +1,5 @@
 import R from 'ramda'
-import {filterProp, sortByProp} from './data'
-import {getWeekNumber} from './timeformat'
+import {sortByProp} from './data'
 
 /* return look at <prop> on <list> and return the median value */
 const getMedian = (prop, list) => R.compose(R.median, R.pluck(prop), R.filter(R.has(prop)))(list)

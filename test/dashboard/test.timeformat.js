@@ -97,8 +97,11 @@ test('timeformat.tinyDate', t => {
 		'We26 2017',
 		'Th27 2017'
 	]
-	t.deepEqual(timeformat.tinyDate(data).length, expected.length , 'must parse all dates')
-	t.deepEqual(timeformat.tinyDate(data), expected , 'must parse all dates')
+
+	data.forEach((date, index) => {
+		t.deepEqual(timeformat.tinyDate(date), expected[index] , 'must match: ' + expected[index])
+	})
+
 })
 
 test('timeformat.getWeekNumber', t => {
