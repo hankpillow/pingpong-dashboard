@@ -1,7 +1,6 @@
+import {defaultGroupBy} from './dispatcher'
 const DEFAULT_STATE = {
-	groupBy:null,
-	timeFormat:null,
-	group:null,
+	origin:[],
 	data:[]
 }
 
@@ -10,10 +9,10 @@ const reducer = (state, action) => {
 	switch(action.type){
 
 		case '@@INIT':
-			return {...DEFAULT_STATE, data:state}
+			return {...DEFAULT_STATE, data:defaultGroupBy(state), origin:state}
 
 		case 'groupBy':
-			return {...state, group:action.payload(state.data)}
+			return {...state, data:action.payload(state.origin)}
 
 		default:
 			return {...DEFAULT_STATE, ...state}

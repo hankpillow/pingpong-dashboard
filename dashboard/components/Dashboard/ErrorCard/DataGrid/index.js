@@ -1,12 +1,9 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
-import {actions} from './store'
 
 import ExitCodeList from './ExitCodeList'
 
-/*eslint-disable*/
-const DataGrid = ({group}, {store}) => {
-	console.log(group)
+const DataGrid = ({data}, {store}) => {
 	return (<div className={'data-group'}>
 		<table>
 			<thead>
@@ -17,7 +14,7 @@ const DataGrid = ({group}, {store}) => {
 				</tr>
 			</thead>
 			<tbody>
-				{group.map(g => {
+				{data.map(g => {
 					const gName = g[0].groupBy
 					const errList = g.map(item => item.exit_code)
 					return (<tr>
@@ -30,7 +27,7 @@ const DataGrid = ({group}, {store}) => {
 		</table>
 	</div>)
 }
-export default connect(state => (state), actions)(DataGrid)
+export default connect(state => ({data:state.data}), () => ({}))(DataGrid)
 
 
 

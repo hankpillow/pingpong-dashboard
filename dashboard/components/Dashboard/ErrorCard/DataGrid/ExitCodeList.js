@@ -18,14 +18,13 @@ const ExitCodeList = ({data}) => {
 	if (!data || (data && data.length === 0)) return ' - '
 
 	const group = groupEq(data)
-
 	return (<ul>
 		{group.map(errGroup => {
 			const errCode = errGroup[0]
 			const errText = prettyError(getCodeMsg(errCode))
 			const errUrl = getURL(getCodeMsg(errCode))
 			const times = errGroup.length + ' time' + (errGroup.length > 1 ? 's' : '')
-			return (<li><a target={'_blank'} href={errUrl}>{errText} ({times})</a></li>)
+			return (<li><a target={'_blank'} href={errUrl}>{errText}</a> ({times})</li>)
 		})}
 	</ul>)
 }

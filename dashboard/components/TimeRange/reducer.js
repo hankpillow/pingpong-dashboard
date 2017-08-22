@@ -1,10 +1,10 @@
 import actions from 'actions'
-import {toDate} from 'modules/data'
+import {toDate, filterSample, filterError} from 'modules/data'
 
 const DEFAULT_STATE = {
 	busy: false,
-	response:null,
-	data: []
+	samples: [],
+	errors: []
 }
 
 export default (state, action) => {
@@ -22,7 +22,8 @@ export default (state, action) => {
 			return {
 				...state,
 				busy: false,
-				data: toDate(action.payload)
+				samples: toDate(filterSample(action.payload)),
+				errors: toDate(filterError(action.payload))
 			}
 
 		default:

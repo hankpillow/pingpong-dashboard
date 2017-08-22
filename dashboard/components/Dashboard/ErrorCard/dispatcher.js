@@ -3,24 +3,30 @@ import {groupByDay, groupByWeek, groupByHour} from 'modules/data'
 
 const repeat = val => val.toString()
 
-const actions = (dispatch) => {
+const defaultGroupBy =  groupByDay
+const defaultFormatTime = repeat
+
+const dispatcher = (dispatch) => {
 	return {
+
 		groupBy: event => {
 			switch(event.target.value) {
-				case 'week': dispatch({ type:'groupBy', payload: groupByWeek }); break
-				case 'hour': dispatch({ type:'groupBy', payload: groupByHour }); break
-				default: dispatch({ type:'groupBy', payload: groupByDay })
+				case 'week': return dispatch({ type:'groupBy', payload: groupByWeek })
+				case 'hour': return dispatch({ type:'groupBy', payload: groupByHour })
+				default: return dispatch({ type:'groupBy', payload: defaultGroupBy })
 			}
 		},
+
 		formatTime: value => {
 			switch(value){
-				case 'date': dispatch({ type:'timeFormat', loader: val => new Date(val).toDateString() }); break
-				case 'pretty': dispatch({ type:'timeFormat', loader: val => pretty(val) }); break
-				case 'tinyDate': dispatch({ type:'timeFormat', loader: val => tinyDate(new Date(val)) }); break
-				default: dispatch({ type:'timeFormat', loader: repeat });
+				case 'date': dispatch({ type:'timeFormat', payload: val => new Date(val).toDateString() }); break
+				case 'pretty': dispatch({ type:'timeFormat', payload: val => pretty(val) }); break
+				case 'tinyDate': dispatch({ type:'timeFormat', payload: val => tinyDate(new Date(val)) }); break
+				default: dispatch({ type:'timeFormat', payload: defaultFormatTime });
 			}
 		}
 	}
 }
 
-export default actions
+export  { defaultGroupBy, defaultFormatTime }
+export default dispatcher

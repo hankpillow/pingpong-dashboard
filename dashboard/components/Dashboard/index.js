@@ -3,18 +3,15 @@ import {h} from 'preact'
 import {connect} from 'preact-redux'
 
 //modules
-import {filterSample, filterError} from 'modules/data'
 import {getUptime} from 'modules/insights'
 
 //comps
 import ErrorCard from './ErrorCard'
 
-const Dashboard = ({data}) => {
+const Dashboard = ({samples, errors}) => {
 
-	if (data && data.length === 0) return 'nothing to show'
+	if (samples.length == 0 && errors.length === 0) return 'nothing to show'
 
-	const errors = filterError(data)
-	const samples = filterSample(data)
 	const uptime = getUptime(samples)
 
 	if (samples.length + errors.length === 0){
@@ -32,4 +29,9 @@ const Dashboard = ({data}) => {
 			</div>)
 }
 
-export default connect(state => ({data:state.api.data}), () => ({}))(Dashboard)
+export default connect(state => {
+	return {
+		samples:state.api.samples,
+		errors:state.api.errors
+	}
+}, () => ({}))(Dashboard)
