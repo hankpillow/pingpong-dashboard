@@ -4,7 +4,7 @@ import {createStore} from 'redux'
 import reducer from './reducer'
 
 import DataGrid from './DataGrid'
-import DataGroup from './DataGroup'
+import DataGroup from 'insights/DataGroup'
 
 const ErrorCard = ({data}) => {
 

@@ -1,4 +1,4 @@
-import actions from 'actions'
+import actions from '../../actions'
 import {toDate, filterSample, filterError} from 'modules/data'
 
 const DEFAULT_STATE = {

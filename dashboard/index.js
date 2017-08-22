@@ -3,7 +3,7 @@ import {h, render} from 'preact'
 import {Provider} from 'preact-redux'
 
 // app
-import store from 'store'
+import store from './store'
 
 // components
 import AppStatus from './components/AppStatus'

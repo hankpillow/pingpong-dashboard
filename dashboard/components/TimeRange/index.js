@@ -1,6 +1,6 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
-import actions from 'actions'
+import actions from '../../actions'
 
 const TimeRange = ({busy, apiFetch}) => {
 
