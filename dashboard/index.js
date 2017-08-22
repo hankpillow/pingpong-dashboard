@@ -8,13 +8,14 @@ import store from 'store'
 // components
 import AppStatus from './components/AppStatus'
 import TimeRange from './components/TimeRange'
-// import Dashboard from './components/Dashboard'
+import Dashboard from './components/Dashboard'
 
 render(
 	<Provider store={store}>
 		<main>
 			<AppStatus />
 			<TimeRange />
+			<Dashboard />
 		</main>
 	</Provider>
 , document.body)

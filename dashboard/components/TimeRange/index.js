@@ -2,21 +2,20 @@ import {h} from 'preact'
 import {connect} from 'preact-redux'
 import actions from 'actions'
 
-const TimeRange = ({disabled, apiFetch}) => {
+const TimeRange = ({busy, apiFetch}) => {
 
 	let getSelected = evt => {
 		const value = evt.target.options[evt.target.selectedIndex].value
-		if (value.length) apiFetch(evt.target.form.action + value)
+		const tmp = '?host=http://www.honda.com.br/motos/'
+		if (value.length) apiFetch(evt.target.form.action + value + tmp)
 	}
 	return (
 		<form
 			className={status}
 			name={'data-picker'}
-			disabled={disabled ? 'disabled' : ''}
+			disabled={busy ? 'disabled' : ''}
 			action="/api/"
 		>
-			<h1>--- {disabled? 'busy' : 'go'} ---</h1>
-			<input type="hidden" name="host" value="http://www.honda.com.br/motos/"/>
 			<label>
 				<select onChange={getSelected}>
 					<option value="">Select the range you want to inspect</option>
@@ -46,4 +45,4 @@ const loader = (dispatch) => {
 	}
 }
 
-export default connect(state => ({disabled: state.timeRange.disabled}), loader)(TimeRange)
+export default connect(state => ({busy: state.api.busy}), loader)(TimeRange)

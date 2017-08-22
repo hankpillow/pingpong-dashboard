@@ -1,21 +1,7 @@
 import {tinyDate, pretty} from 'modules/timeformat'
 import {groupByDay, groupByWeek, groupByHour} from 'modules/data'
-/*eslint-disable*/
+
 const repeat = val => val.toString()
-
-const DEFAULT_STATE = {
-	groupBy: groupByDay,
-	timeFormat: repeat,
-	group:null,
-	data:[]
-}
-
-const reducer = (state, action) => {
-	switch(action.type){
-		case 'groupBy': return {...state, group: action.payload(state.data)}
-		default: return {...DEFAULT_STATE, ...state, group: DEFAULT_STATE.groupBy(state.data)}
-	}
-}
 
 const actions = (dispatch) => {
 	return {
@@ -37,6 +23,4 @@ const actions = (dispatch) => {
 	}
 }
 
-export {actions, reducer}
-export default reducer
-
+export default actions

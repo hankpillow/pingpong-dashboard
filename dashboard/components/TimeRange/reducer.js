@@ -2,7 +2,9 @@ import actions from 'actions'
 import {toDate} from 'modules/data'
 
 const DEFAULT_STATE = {
-	disabled: false
+	busy: false,
+	response:null,
+	data: []
 }
 
 export default (state, action) => {
@@ -11,15 +13,15 @@ export default (state, action) => {
 
 		case actions.DATA_FETCH:
 			return {
-				disabled: true,
+				...state,
+				busy: true,
 				query: action.query
 			}
 
 		case actions.DATA_LOADED:
 			return {
 				...state,
-				disabled: false,
-				reponse: action.payload,
+				busy: false,
 				data: toDate(action.payload)
 			}
 

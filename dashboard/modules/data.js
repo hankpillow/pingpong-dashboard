@@ -28,7 +28,7 @@ const filterProp = (prop) => R.filter(R.has(prop))
 
 /* convert 'date' prop value into Date instance */
 const toDate = R.compose(
-	R.map(item => {return {...item, date:new Date(item.date)}}),
+	R.map(item => ({...item, date:new Date(item.date)})),
 	R.filter(item => !isNaN(Date.parse(item.date))),
 	R.filter(R.propIs(String, 'date')),
 	filterProp('date')

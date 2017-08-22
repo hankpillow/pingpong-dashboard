@@ -1,6 +1,6 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
-import {actions} from './store'
+import {actions} from './actions'
 
 const GroupBy = ({groupBy}) => {
 	return (<select onchange={groupBy}>
@@ -9,4 +9,4 @@ const GroupBy = ({groupBy}) => {
 			<option value={'week'}>weekly</option>
 		</select>)
 }
-export default connect(state => (state), actions)(GroupBy)
+export default connect(state => ({}), actions)(GroupBy)

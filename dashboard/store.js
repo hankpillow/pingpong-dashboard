@@ -11,7 +11,7 @@ const middleware = window.__REDUX_DEVTOOLS_EXTENSION__ ?
 
 const store = createStore(combineReducers({
 	appStatus: statusReducer,
-	timeRange: timeReducer
+	api: timeReducer
 }), {}, middleware)
 
 export default store
