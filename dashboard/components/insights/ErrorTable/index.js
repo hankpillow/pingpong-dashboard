@@ -4,14 +4,14 @@ import {connect} from 'preact-redux'
 import ExitCodeList from './ExitCodeList'
 import DateFormatter from 'insights/DateFormatter'
 
-const DataGrid = ({data}, {store}) => {
+const ErrorTable = ({data}) => {
 	return (<div className={'data-group'}>
 		<table>
 			<thead>
 				<tr>
 					<th><DateFormatter/></th>
 					<th>checks</th>
-					<th>error</th>
+					<th>curl error code</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,4 +29,4 @@ const DataGrid = ({data}, {store}) => {
 	</div>)
 }
 
-export default connect(state => ({data:state.data}), () => ({}))(DataGrid)
+export default connect(state => ({data:state.data}), () => ({}))(ErrorTable)

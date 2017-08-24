@@ -23,7 +23,7 @@ module.exports = function(env) {
 			alias: {
 				modules: path.resolve(__dirname + '/dashboard/modules'),
 				comp: path.resolve(__dirname + '/dashboard/components'),
-				insights: path.resolve(__dirname + '/dashboard/components/Dashboard/insights')
+				insights: path.resolve(__dirname + '/dashboard/components/insights')
 			}
 		},
 

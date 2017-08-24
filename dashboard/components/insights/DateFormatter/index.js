@@ -4,6 +4,7 @@ import dispatcher from './dispatcher'
 
 const DateFormatter = ({formatTime}) => {
 	return (<select onchange={formatTime}>
+		<option value={''}>none</option>
 		<option value={'date'}>date</option>
 		<option value={'pretty'}>pretty</option>
 		<option value={'tinyDate'}>tiny date</option>

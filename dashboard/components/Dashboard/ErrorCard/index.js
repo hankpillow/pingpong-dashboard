@@ -3,7 +3,7 @@ import {Provider, connect} from 'preact-redux'
 import {createStore} from 'redux'
 import reducer from './reducer'
 
-import DataGrid from './DataGrid'
+import ErrorTable from 'insights/ErrorTable'
 import DataGroup from 'insights/DataGroup'
 
 const ErrorCard = ({data}) => {
@@ -20,9 +20,12 @@ const ErrorCard = ({data}) => {
 
 	return (<Provider store={store}>
 		<div className={'error-wrapper'}>
-			<h3>Error list ({data.length})</h3>
-			<DataGroup />
-			<DataGrid />
+			<h3>
+				Error list ({data.length})
+				<span>Group data by:</span>
+				<DataGroup />
+			</h3>
+			<ErrorTable />
 		</div>
 	</Provider>)
 }
