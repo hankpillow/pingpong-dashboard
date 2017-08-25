@@ -1,55 +1,73 @@
 import R from 'ramda'
 import {getWeekNumber} from './timeformat'
 
-const BY_HOUR = date => `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}-${date.getHours()}`
-const BY_DAY = date => `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-const BY_WEEK = date => `${date.getFullYear()}-W${getWeekNumber(date)}`
-const BY_MONTH = date => `${date.getFullYear()}-${date.getMonth()}`
+const BY_TIME_FRAME = date => {
+	const h = date.getHours()
+	if (h < 6) return 1
+	if (h < 12) return 2
+	if (h < 18) return 3
+	if (h < 24) return 4
+
+}
+const BY_DATE = date => `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+const BY_HOUR = date => `${date.getHours()}`
+const BY_DAY = date => `${date.getDate()}`
+const BY_WEEK_DAY = date => `${date.getDay()}`
+const BY_WEEK_NUM = date => `${getWeekNumber(date)}`
+const BY_MONTH = date => `${date.getMonth()}`
 const BY_YEAR = date => `${date.getFullYear()}`
-const addGroup = (groupReducer) => R.map(item => { return {...item, groupBy: groupReducer(item.date)} })
 
-const groupByHour = R.compose(R.groupWith(R.eqProps('groupBy')), addGroup(BY_HOUR))
-const groupByDay = R.compose(R.groupWith(R.eqProps('groupBy')), addGroup(BY_DAY))
-const groupByWeek = R.compose(R.groupWith(R.eqProps('groupBy')), addGroup(BY_WEEK))
-const groupByMonth = R.compose(R.groupWith(R.eqProps('groupBy')), addGroup(BY_MONTH))
-const groupByYear = R.compose(R.groupWith(R.eqProps('groupBy')), addGroup(BY_YEAR))
+const onlyDate = R.compose(R.filter(R.propIs(Date, 'date')), R.filter(R.is(Object)))
 
-/* return item.type==error from <list>*/
+const reduceByProp = (prop, propReducer) => {
+	return R.reduce((result, item) => {
+		const groupName = propReducer(item[prop])
+		if (!result[groupName]){
+			result[groupName] = []
+		}
+		result[groupName].push(item)
+		return result
+	}, {})
+}
+
+const groupBy = fn => R.compose(reduceByProp('date', fn), onlyDate)
+
+const groupByDate = groupBy(BY_DATE)
+const groupByHour = groupBy(BY_HOUR)
+const groupByDay = groupBy(BY_DAY)
+const groupByWeekNum = groupBy(BY_WEEK_NUM)
+const groupByWeekDay = groupBy(BY_WEEK_DAY)
+const groupByMonth = groupBy(BY_MONTH)
+const groupByYear = groupBy(BY_YEAR)
+const groupByTimeFrame = groupBy(BY_TIME_FRAME)
+
 const filterError = R.filter(R.propEq('type','error'))
-
-/* return item.type==sample from <list>*/
 const filterSample = R.filter(R.propEq('type','sample'))
 
-/* return list of values from <prop> */
 const pluck = (prop, list) => R.pluck(prop)(list)
 
-/* return item.type==error from <list>*/
-const filterProp = (prop) => R.filter(R.has(prop))
-
-/* convert 'date' prop value into Date instance */
 const toDate = R.compose(
 	R.map(item => ({...item, date:new Date(item.date)})),
 	R.filter(item => !isNaN(Date.parse(item.date))),
 	R.filter(R.propIs(String, 'date')),
-	filterProp('date')
+	R.filter(R.has('date')),
+	R.filter(R.is(Object))
 )
 
-/* return sorted list with only <prop> by <fn> */
-const sortByProp = (prop, fn = (a,b) => a > b) => R.compose(R.sort(fn), filterProp(prop))
+const sortByProp = (prop, fn = (a,b) => a > b) => {
+	return R.compose(
+		R.sort(fn),
+		R.filter(R.has(prop)),
+		R.filter(R.is(Object))
+	)
+}
 
 /* all data action are made for lists.
  * for single units you can use the proxy*/
 const single = R.curry((fn, data) => fn([data])[0])
 
 export {
-	single,
-	filterError, filterSample, filterProp,
-	sortByProp,
-	toDate,
-	pluck,
-	groupByMonth,
-	groupByWeek,
-	groupByDay,
-	groupByYear,
-	groupByHour
+	toDate, single, pluck, sortByProp,
+	filterError, filterSample,
+	groupByDate, groupByMonth, groupByWeekNum, groupByWeekDay, groupByDay, groupByYear, groupByHour, groupByTimeFrame
 }

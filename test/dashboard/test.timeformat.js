@@ -1,7 +1,7 @@
 import test from 'ava';
 import * as timeformat from '../../dashboard/modules/timeformat'
 
-const zero = new Date('2017-07-20 15:30:00')
+const zero = new Date('2017-7-20 15:30:00')
 
 test('timeformat.pretty should handle invalid params', t => {
 	const msg =  'should return empty string for invalid args'
@@ -78,24 +78,44 @@ test('timeformat.pretty "N years ago"', t => {
 
 test('timeformat.tinyDate', t => {
 	const data = [
-		new Date('2017-07-20 13:30:01'),
-		new Date('2017-07-21 13:30:01'),
-		new Date('2017-07-22 13:30:01'),
-		new Date('2017-07-23 13:30:01'),
-		new Date('2017-07-24 13:30:01'),
-		new Date('2017-07-25 13:30:01'),
-		new Date('2017-07-26 13:30:01'),
-		new Date('2017-07-27 13:30:01'),
+		new Date('2017-01-01 13:30:01'),
+		new Date('2017-01-02 13:30:01'),
+		new Date('2017-01-03 13:30:01'),
+		new Date('2017-01-04 13:30:01'),
+		new Date('2017-01-05 13:30:01'),
+		new Date('2017-01-06 13:30:01'),
+		new Date('2017-01-07 13:30:01'),
+		new Date('2017-02-01 13:30:01'),
+		new Date('2017-03-01 13:30:01'),
+		new Date('2017-04-01 13:30:01'),
+		new Date('2017-05-01 13:30:01'),
+		new Date('2017-06-01 13:30:01'),
+		new Date('2017-07-01 13:30:01'),
+		new Date('2017-08-01 13:30:01'),
+		new Date('2017-09-01 13:30:01'),
+		new Date('2017-10-01 13:30:01'),
+		new Date('2017-11-01 13:30:01'),
+		new Date('2017-12-01 13:30:01'),
 	]
 	const expected = [
-		'Th20 2017',
-		'Fr21 2017',
-		'Sa22 2017',
-		'Su23 2017',
-		'Mo24 2017',
-		'Tu25 2017',
-		'We26 2017',
-		'Th27 2017'
+		'Su 1 Jan',
+		'Mo 2 Jan',
+		'Tu 3 Jan',
+		'We 4 Jan',
+		'Th 5 Jan',
+		'Fr 6 Jan',
+		'Sa 7 Jan',
+		'We 1 Feb',
+		'We 1 Mar',
+		'Sa 1 Apr',
+		'Mo 1 May',
+		'Th 1 Jun',
+		'Sa 1 Jul',
+		'Tu 1 Aug',
+		'Fr 1 Sep',
+		'Su 1 Oct',
+		'We 1 Nov',
+		'Fr 1 Dec'
 	]
 
 	data.forEach((date, index) => {

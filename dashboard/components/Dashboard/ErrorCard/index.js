@@ -20,11 +20,8 @@ const ErrorCard = ({data}) => {
 
 	return (<Provider store={store}>
 		<div className={'error-wrapper'}>
-			<h3>
-				Error list ({data.length})
-				<span>Group data by:</span>
-				<DataGroup />
-			</h3>
+			<h3>Error list ({data.length})</h3>
+			<span>Group data by:</span> <DataGroup />
 			<ErrorTable />
 		</div>
 	</Provider>)

@@ -51,8 +51,10 @@ const pretty = (time, now = new Date()) => {
 }
 
 const WEEK_DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa']
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 const tinyDate = date =>  { if (!date) return ''
-	return `${WEEK_DAYS[date.getDay()]}${date.getDate()} ${date.getFullYear()}`
+	return `${WEEK_DAYS[date.getDay()]} ${date.getDate()} ${MONTHS[date.getMonth()]}`
 }
 
 //@full credits to https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php/6117889#6117889
