@@ -4,24 +4,10 @@ import R from 'ramda'
 import {tinyDate, pretty} from 'modules/timeformat'
 
 import ExitCodeList from './ExitCodeList'
-// import DateFormat from 'insights/DateFormat'
 
-/*eslint-disable*/
-const resolveFormat = R.curry((groupName, dateFormat, value) => {
-	return value
-	// switch(groupName) {
-	// 	case 'hour':
-	// 			return dateFormat == 'pretty' ? (value+'h') : value
+const resolveFormat = R.curry((format, value) => format(value))
 
-	// 	case 'day':
-	// 	default:
-	// 		return dateFormat === 'pretty' ? tinyDate(new Date(value)) : new Date(value).toDateString()
-	// }
-})
-
-const ErrorTable = (state) => {
-	const data = state.groupFn(state.data)
-	const transformDate = resolveFormat(state.groupName, state.dateFormat)
+const ErrorTable = ({data, transformDate}) => {
 	return (<div className={'data-group'}>
 		<table>
 			<thead>
@@ -47,4 +33,9 @@ const ErrorTable = (state) => {
 	</div>)
 }
 
-export default connect(state => ({...state}), () => ({}))(ErrorTable)
+export default connect(state => {
+	return {
+		data:state.group.groupBy(state.data),
+		transformDate: resolveFormat(state.group.groupPretty)
+	}
+}, () => ({}))(ErrorTable)

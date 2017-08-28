@@ -1,12 +1,8 @@
-import {defaultGroupName} from 'insights/DataGroup'
-import {defaultPayload as defaultGroup, type as GroupAction} from 'insights/DataGroup/dispatcher'
-import {defaultPayload as defaultFormat, type as DateAction} from 'insights/DateFormat/dispatcher'
+import {defaultPayload as groupPayload, type as GroupAction} from 'insights/DataGroup/dispatcher'
 
 const DEFAULT_STATE = {
-	groupName: defaultGroupName,
-	groupFn: defaultGroup,
-	dateFormat: defaultFormat,
-	data:[],
+	group: groupPayload,
+	data: [],
 }
 
 const reducer = (state, action) => {
@@ -20,17 +16,10 @@ const reducer = (state, action) => {
 
 		case GroupAction: return {
 				...state,
-				groupName:action.target,
-				groupFn:action.payload
+				group:action.payload
 			}
 
-		case DateAction: return {
-				...state,
-				dateFormat:action.payload
-			}
-
-		default:
-			return {...DEFAULT_STATE, ...state}
+		default: return {...state}
 	}
 }
 
