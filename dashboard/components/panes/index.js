@@ -1,22 +1,13 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
+import nd from 'stores/nd'
+import ns from 'stores/ns'
 
 import ErrorCard from './ErrorCard'
 
-const Panes = ({samples, errors}) => {
+const Panes = () => {
 	return (<div className={'dashboard'}>
-				<ul>
-					<li>samples: {samples.length}</li>
-					<li>error: {errors.length}</li>
-					<li>total:{errors.length + samples.length}</li>
-				</ul>
-				<ErrorCard/>
-			</div>)
+			<ErrorCard/>
+		</div>)
 }
-
-export default connect(state => {
-	return {
-		samples:state.api.samples,
-		errors:state.api.errors
-	}
-}, () => ({}))(Panes)
+export default connect(ns, nd)(Panes)

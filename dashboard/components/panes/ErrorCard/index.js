@@ -1,12 +1,11 @@
 import {h} from 'preact'
-import {Provider, connect} from 'preact-redux'
-import store from 'stores/errors'
+import {connect} from 'preact-redux'
 import nd from 'stores/nd'
 
 import ErrorTable from 'insights/ErrorTable'
 import DataGroup from 'insights/DataGroup'
 
-const ErrorCard = ({data, samples}) => {
+const ErrorCard = ({data}) => {
 
 	if (!data || (data && data.length === 0)){
 		return (<div className={'error-wrapper'}>
@@ -18,23 +17,16 @@ const ErrorCard = ({data, samples}) => {
 		</div>)
 	}
 
-	const errorStore = store(data)
-	const loss = (data.length / samples * 100).toPrecision(2)
-
-		return (<Provider store={errorStore}>
-			<div className={'error-wrapper'}>
-				<h3>Error list ({data.length})</h3>
-				<sub>{loss}% of the tries were errors!</sub>
-				<p>
-					Group data by:
-					<DataGroup />
-				</p>
-				<ErrorTable />
-			</div>
-		</Provider>)
+	return (<div className={'error-wrapper'}>
+			<h3>Error list ({data.length})</h3>
+			<p>
+				Group data by:
+				<DataGroup />
+			</p>
+			<ErrorTable />
+		</div>)
 }
 
 export default connect(state => ({
-	data: state.api.errors,
-	samples: state.api.samples.length
+	data: state.error.data
 }), nd)(ErrorCard)

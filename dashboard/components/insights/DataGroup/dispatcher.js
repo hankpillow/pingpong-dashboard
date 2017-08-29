@@ -1,103 +1,65 @@
-import {
-	groupByDate,
-	groupByMonth,
-	groupByWeekNum,
-	groupByWeekDay,
-	groupByDay,
-	groupByYear,
-	groupByHour,
-	groupByTimeFrame
-} from 'modules/data'
+import * as data from 'modules/data'
+import * as time from 'modules/timeformat'
 
-import {prettyDate, prettyMonth, prettyWeekDay} from 'modules/timeformat'
+const resolvePayload = groupName => {
+	let payload = {groupName}
 
-const formatTimeframe = val => {
-	switch(parseInt(val, 10)) {
-		case 1: return 'madrugada'
-		case 2: return 'manha'
-		case 3: return 'tarde'
-		default: return 'noite'
-	}
+	switch(groupName) {
+			case 'timeframe':
+				payload.groupBy = data.groupByTimeFrame
+				payload.groupPretty = time.prettyTimeframe
+				break
+
+			case 'hour':
+				payload.groupBy = data.groupByHour
+				payload.groupPretty = time.prettyHour
+				break
+
+			case 'year':
+				payload.groupBy = data.groupByYear
+				payload.groupPretty = val => val
+				break
+
+			case 'day':
+				payload.groupBy = data.groupByDay
+				payload.groupPretty = time.prettyDay
+				break
+
+			case 'week-day':
+				payload.groupBy = data.groupByWeekDay
+				payload.groupPretty = time.prettyWeekDay
+				break
+
+			case 'week-num':
+				payload.groupBy = data.groupByWeekNum
+				payload.groupPretty = time.prettyWeekNum
+				break
+
+			case 'month':
+				payload.groupBy = data.groupByMonth
+				payload.groupPretty = time.prettyMonth
+				break
+
+			case 'date':
+			default:
+				payload.groupBy = data.groupByDate
+				payload.groupPretty = time.prettyDate
+		}
+		return payload
 }
 
-const formatDay = val => {
-	let end = val.toString()
-	end = end.charAt(end.length-1)
-	if (end == '1') return `${val}st`
-	if (end == '2') return `${val}nd`
-	if (end == '3') return `${val}rd`
-	return `${val}th`
-}
-
-const formatHour = val => `${val}h`
-const formatWeekNum = val => `${val}W`
-const formatWeekDay = val => prettyWeekDay(val)
-const formatMonth = val => prettyMonth(val)
-const formatDate = val => prettyDate(new Date(val))
-
+const defaultPayload = resolvePayload()
 const type = 'groupBy'
 
-const defaultPayload = {
-	groupBy: groupByDate,
-	groupName: 'date',
-	groupPretty: formatDate
-}
-
 const dispatcher = (dispatch) => {
-
 	return {
-
 		groupBy: event => {
-
-			const groupName = event.target.value
-			let payload = {...defaultPayload, groupName}
-
-			switch(event.target.value) {
-
-				case 'timeframe':
-					payload.groupBy = groupByTimeFrame
-					payload.groupPretty = formatTimeframe
-					break
-
-				case 'hour':
-					payload.groupBy = groupByHour
-					payload.groupPretty = formatHour
-					break
-
-				case 'year':
-					payload.groupBy = groupByYear
-					payload.groupPretty = val => val
-					break
-
-				case 'day':
-					payload.groupBy = groupByDay
-					payload.groupPretty = formatDay
-					break
-
-				case 'week-day':
-					payload.groupBy = groupByWeekDay
-					payload.groupPretty = formatWeekDay
-					break
-
-				case 'week-num':
-					payload.groupBy = groupByWeekNum
-					payload.groupPretty = formatWeekNum
-					break
-
-				case 'month':
-					payload.groupBy = groupByMonth
-					payload.groupPretty = formatMonth
-					break
-
-				case 'date':
-				default:
-					payload.groupBy = defaultPayload
-					payload.groupPretty = formatDate
-			}
+			const payload = resolvePayload(event.target.value)
 			return dispatch({type, payload})
 		},
 	}
 }
 
-export  {defaultPayload, type}
+
+export {defaultPayload, type}
 export default dispatcher

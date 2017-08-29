@@ -12,7 +12,7 @@ const dispatcher = (dispatch) => {
 				fetch(query)
 					.then(resp => resp.json())
 					.then(payload => dispatch({payload, type: DATA_LOADED}))
-					.catch(error => dispatch({error, type: FAIL}))
+					.catch(error => dispatch({errorMsg: error.message, type: FAIL}))
 		}
 	}
 }

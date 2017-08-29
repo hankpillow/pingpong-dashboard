@@ -1,6 +1,7 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
 import R from 'ramda'
+import nd from 'stores/nd'
 
 import ExitCodeList from './ExitCodeList'
 
@@ -34,7 +35,7 @@ const resolveFormat = R.curry((format, value) => format(value))
 
 export default connect(state => {
 	return {
-		data:state.group.groupBy(state.data),
-		prettyFormat: resolveFormat(state.group.groupPretty)
+		data:state.error.group.groupBy(state.error.data),
+		prettyFormat: resolveFormat(state.error.group.groupPretty)
 	}
-}, () => ({}))(ErrorTable)
+}, nd)(ErrorTable)
