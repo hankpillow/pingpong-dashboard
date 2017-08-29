@@ -1,13 +1,10 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
 import R from 'ramda'
-import {tinyDate, pretty} from 'modules/timeformat'
 
 import ExitCodeList from './ExitCodeList'
 
-const resolveFormat = R.curry((format, value) => format(value))
-
-const ErrorTable = ({data, transformDate}) => {
+const ErrorTable = ({data, prettyFormat}) => {
 	return (<div className={'data-group'}>
 		<table>
 			<thead>
@@ -19,7 +16,7 @@ const ErrorTable = ({data, transformDate}) => {
 			</thead>
 			<tbody>
 				{Object.keys(data).map(group => {
-					const dateColumn = transformDate(group)
+					const dateColumn = prettyFormat(group)
 					const groupList = data[group]
 					const errList = groupList.map(item => item.exit_code)
 					return (<tr>
@@ -33,9 +30,11 @@ const ErrorTable = ({data, transformDate}) => {
 	</div>)
 }
 
+const resolveFormat = R.curry((format, value) => format(value))
+
 export default connect(state => {
 	return {
 		data:state.group.groupBy(state.data),
-		transformDate: resolveFormat(state.group.groupPretty)
+		prettyFormat: resolveFormat(state.group.groupPretty)
 	}
 }, () => ({}))(ErrorTable)

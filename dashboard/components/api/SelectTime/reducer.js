@@ -1,4 +1,4 @@
-import actions from '../../actions'
+import {DATA_FETCH, DATA_LOADED, FAIL} from './dispatcher'
 import {toDate, filterSample, filterError} from 'modules/data'
 
 const DEFAULT_STATE = {
@@ -11,22 +11,27 @@ export default (state, action) => {
 
 	switch(action.type){
 
-		case actions.DATA_FETCH:
-			return {
+		case DATA_FETCH: return {
 				...state,
 				busy: true,
 				query: action.query
 			}
 
-		case actions.DATA_LOADED:
-			return {
+		case DATA_LOADED: return {
 				...state,
 				busy: false,
 				samples: toDate(filterSample(action.payload)),
 				errors: toDate(filterError(action.payload))
 			}
+		
+		case FAIL: return {
+			...DEFAULT_STATE,
+			error: action.payload.error
+		}
 
-		default:
-			return {...DEFAULT_STATE, ...state}
+		default: return {
+				...DEFAULT_STATE,
+				...state
+			}
 	}
 }

@@ -3,19 +3,17 @@ import {h, render} from 'preact'
 import {Provider} from 'preact-redux'
 
 // app
-import store from './store'
+import store from 'stores/api'
 
 // components
-import AppStatus from './components/AppStatus'
-import TimeRange from './components/TimeRange'
-import Dashboard from './components/Dashboard'
+import Api from 'components/api'
+import Panes from 'components/panes'
 
 render(
 	<Provider store={store}>
 		<main>
-			<AppStatus />
-			<TimeRange />
-			<Dashboard />
+			<Api />
+			<Panes />
 		</main>
 	</Provider>
 , document.body)
