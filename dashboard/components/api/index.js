@@ -14,6 +14,6 @@ const API = ({busy}) => {
 }
 
 export default connect(state => {
-	return {busy:state.busy}
+	return {busy:state.api.busy}
 }, () => ({}))(API)
 

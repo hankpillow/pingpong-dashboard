@@ -4,13 +4,6 @@ import {connect} from 'preact-redux'
 import ErrorCard from './ErrorCard'
 
 const Panes = ({samples, errors}) => {
-
-	if (samples.length == 0 && errors.length === 0) return 'nothing to show'
-
-	if (samples.length + errors.length === 0){
-		return (<span>¯\_(ツ)_/¯</span>)
-	}
-
 	return (<div className={'dashboard'}>
 				<ul>
 					<li>samples: {samples.length}</li>
@@ -23,7 +16,7 @@ const Panes = ({samples, errors}) => {
 
 export default connect(state => {
 	return {
-		samples:state.samples,
-		errors:state.errors
+		samples:state.api.samples,
+		errors:state.api.errors
 	}
 }, () => ({}))(Panes)

@@ -10,7 +10,10 @@ const ErrorCard = ({data, samples}) => {
 
 	if (!data || (data && data.length === 0)){
 		return (<div className={'error-wrapper'}>
-			<h3>Oki doki!</h3>
+			<h3>
+				Error list
+				<p>Oki doki!</p>
+			</h3>
 			<span>Seems that your log has no error!</span>
 		</div>)
 	}
@@ -32,6 +35,6 @@ const ErrorCard = ({data, samples}) => {
 }
 
 export default connect(state => ({
-	data: state.errors,
-	samples: state.samples.length
+	data: state.api.errors,
+	samples: state.api.samples.length
 }), nd)(ErrorCard)
