@@ -2,7 +2,7 @@ import * as data from 'modules/data'
 import * as time from 'modules/timeformat'
 
 const resolvePayload = groupName => {
-	let payload = {groupName}
+	let payload = ({groupName})
 
 	switch(groupName) {
 			case 'timeframe':
@@ -42,6 +42,7 @@ const resolvePayload = groupName => {
 
 			case 'date':
 			default:
+				payload.groupName = 'date'
 				payload.groupBy = data.groupByDate
 				payload.groupPretty = time.prettyDate
 		}

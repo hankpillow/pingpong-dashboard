@@ -17,6 +17,8 @@ const BY_WEEK_NUM = date => `${getWeekNumber(date)}`
 const BY_MONTH = date => `${date.getMonth()}`
 const BY_YEAR = date => `${date.getFullYear()}`
 
+const groupBy = (prop, fn) => data => R.compose(reduceByProp(prop, fn), onlyDate)(data)
+
 const onlyDate = R.compose(R.filter(R.propIs(Date, 'date')), R.filter(R.is(Object)))
 
 const reduceByProp = (prop, propReducer) => {
@@ -30,19 +32,17 @@ const reduceByProp = (prop, propReducer) => {
 	}, {})
 }
 
-const groupBy = fn => R.compose(reduceByProp('date', fn), onlyDate)
+const groupByDate = groupBy('date', BY_DATE)
+const groupByHour = groupBy('date',BY_HOUR)
+const groupByDay = groupBy('date',BY_DAY)
+const groupByWeekNum = groupBy('date',BY_WEEK_NUM)
+const groupByWeekDay = groupBy('date',BY_WEEK_DAY)
+const groupByMonth = groupBy('date',BY_MONTH)
+const groupByYear = groupBy('date',BY_YEAR)
+const groupByTimeFrame = groupBy('date',BY_TIME_FRAME)
 
-const groupByDate = groupBy(BY_DATE)
-const groupByHour = groupBy(BY_HOUR)
-const groupByDay = groupBy(BY_DAY)
-const groupByWeekNum = groupBy(BY_WEEK_NUM)
-const groupByWeekDay = groupBy(BY_WEEK_DAY)
-const groupByMonth = groupBy(BY_MONTH)
-const groupByYear = groupBy(BY_YEAR)
-const groupByTimeFrame = groupBy(BY_TIME_FRAME)
-
-const filterError = R.filter(R.propEq('type','error'))
-const filterSample = R.filter(R.propEq('type','sample'))
+const filterError = R.compose(R.filter(R.propEq('type','error')), R.filter(R.is(Object)))
+const filterSample = R.compose(R.filter(R.propEq('type','sample')), R.filter(R.is(Object)))
 
 const pluck = (prop, list) => R.pluck(prop)(list)
 

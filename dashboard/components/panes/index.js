@@ -1,8 +1,5 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
-import nd from 'stores/nd'
-import ns from 'stores/ns'
-
 import ErrorCard from './ErrorCard'
 
 const Panes = () => {
@@ -10,4 +7,4 @@ const Panes = () => {
 			<ErrorCard/>
 		</div>)
 }
-export default connect(ns, nd)(Panes)
+export default connect(null, null)(Panes)

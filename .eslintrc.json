@@ -6,6 +6,8 @@
     ],
     "rules": {
       "no-unused-vars": [1, { "varsIgnorePattern": "^h$" }],
+      "no-debugger": 1,
+      "no-console": 1,
       "react/jsx-uses-vars":2
     },
     "parserOptions": {
