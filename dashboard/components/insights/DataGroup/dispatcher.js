@@ -61,6 +61,5 @@ const dispatcher = (dispatch) => {
 	}
 }
 
-
 export {defaultPayload, type}
 export default dispatcher

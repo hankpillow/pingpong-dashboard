@@ -42,7 +42,7 @@ const ErrorTable = ({data, prettyFormat}) => {
 const resolveFormat = R.curry((format, value) => format(value))
 
 export default connect(state => {
-	const data = D.groupByDate(state.error.data)
+	const data = state.error.group.groupBy(state.error.data)
 	const prettyFormat = resolveFormat(state.error.group.groupPretty)
 	return {data, prettyFormat}
 }, null)(ErrorTable)
