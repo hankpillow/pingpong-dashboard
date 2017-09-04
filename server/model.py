@@ -6,14 +6,30 @@ from datetime import datetime
 
 DATE_TEMPLATE = "%Y-%m-%d_%H:%M:%S"
 
+def parse_date(date):
+    return datetime.strptime(date, DATE_TEMPLATE)
+
+
 def format_sample(arr):
-    """format arr into curl sample"""
-    if not arr:
+    """
+    format arr into curl sample
+    only expected format will return a dictionary
+    """
+
+    if not isinstance(arr, list):
+        return None
+
+    if len(arr) != 11:
+        return None
+
+    try:
+        date = parse_date(arr[0])
+    except ValueError:
         return None
 
     return {
         "type": "sample",
-        "date": datetime.strptime(arr[0], DATE_TEMPLATE),
+        "date": date,
         "http_code": arr[1],
         "time_namelookup": arr[2],
         "time_connect": arr[3],
@@ -28,24 +44,38 @@ def format_sample(arr):
 
 def format_error(arr):
     """format arr into failed curl"""
-    if not arr:
+    if not isinstance(arr, list):
+        return None
+
+    if len(arr) < 3 or len(arr) > 4:
+        return None
+
+    if arr[1][0] != '!':
+        return None
+
+    try:
+        date = parse_date(arr[0])
+    except ValueError:
         return None
 
     return {
         "type": "error",
-        "date": datetime.strptime(arr[0], DATE_TEMPLATE),
+        "date": date,
         "exit_code": arr[1][1:],
         "url": arr[2],
         "user": arr[3] if len(arr) > 3 else ""
     }
 
 def parse_line(info):
-    """transform the given line into api object"""
+    """
+    transform the given line into api's model
+    """
 
     if not isinstance(info, basestring):
         return None
 
-    if  len(info) == 0:
+    size = len(info)
+    if  size == 0:
         return None
 
     chunks = info.split(' ')
