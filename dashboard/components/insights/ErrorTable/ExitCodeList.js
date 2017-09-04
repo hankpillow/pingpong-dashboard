@@ -24,7 +24,8 @@ const ExitCodeList = ({data}) => {
 			const errText = prettyError(getCodeMsg(errCode))
 			const errUrl = getURL(getCodeMsg(errCode))
 			const times = errGroup.length + ' time' + (errGroup.length > 1 ? 's' : '')
-			return (<li><a target={'_blank'} href={errUrl}>{errText}</a> ({times})</li>)
+			const percentage = (errGroup.length / data.length * 100).toPrecision(3)
+			return (<li><a target={'_blank'} href={errUrl}>{errText}</a> ({times}/{percentage}%)</li>)
 		})}
 	</ul>)
 }

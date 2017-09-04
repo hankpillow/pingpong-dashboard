@@ -1,13 +1,10 @@
-import * as D from 'modules/data'
-
-
 import {h} from 'preact'
 import {connect} from 'preact-redux'
 import R from 'ramda'
 
 import ExitCodeList from './ExitCodeList'
 
-const ErrorTable = ({data, prettyFormat}) => {
+const ErrorTable = ({data, prettyFormat, total}) => {
 	const groups = Object.keys(data)
 	
 	if (groups.length === 0){
@@ -20,6 +17,7 @@ const ErrorTable = ({data, prettyFormat}) => {
 				<tr>
 					<th>group</th>
 					<th>checks</th>
+					<th>%</th>
 					<th>curl error code</th>
 				</tr>
 			</thead>
@@ -31,6 +29,7 @@ const ErrorTable = ({data, prettyFormat}) => {
 					return (<tr>
 							<td>{dateColumn}</td>
 							<td>{groupList.length}</td>
+							<td>{(groupList.length/total*100).toPrecision(3)}%</td>
 							<td><ExitCodeList data={errList} /></td>
 						</tr>)
 				})}
@@ -42,7 +41,8 @@ const ErrorTable = ({data, prettyFormat}) => {
 const resolveFormat = R.curry((format, value) => format(value))
 
 export default connect(state => {
+	const total = state.error.data.length
 	const data = state.error.group.groupBy(state.error.data)
 	const prettyFormat = resolveFormat(state.error.group.groupPretty)
-	return {data, prettyFormat}
+	return {data, prettyFormat, total}
 }, null)(ErrorTable)
