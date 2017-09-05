@@ -10,7 +10,7 @@ def parse_date(date):
     """ return date object following data template model
     """
 
-    if (not isinstance(date, basestring)):
+    if not isinstance(date, basestring):
         raise Exception("parse_date:: expected basestring")
 
     try:

@@ -1,3 +1,8 @@
+"""
+falcon server to host api for handling
+pingpong image log
+"""
+
 from api import PingPong
 import falcon
 
@@ -6,6 +11,7 @@ class View(object):
 
     def on_get(self, request, response):
         """static page"""
+        del request
         response.content_type = "text/html"
         response.body = '<html><body>foo</body></html>'
 
@@ -14,6 +20,7 @@ class CorsMiddleware(object):
 
     def process_request(self, request, response):
         """inject controll access header"""
+        del request
         response.set_header('Access-Control-Allow-Origin', '*')
 
 API = falcon.API(middleware=[CorsMiddleware()])
