@@ -7,6 +7,11 @@ from datetime import datetime, date, timedelta
 from subprocess import check_output
 from subprocess import CalledProcessError
 
+def date_pad(val):
+    """ return lpad string from given value
+    """
+    return str(val).zfill(2)
+
 def run_process(cmd, name=""):
     """ run subprocess from given cmd and return the output
     """
@@ -69,35 +74,41 @@ def get_ag_selector(start, end=datetime.now()):
     d_diff = offset.days
     s_diff = offset.seconds
 
-    min_s = str(start.minute).zfill(2)
-    hour_s = str(start.hour).zfill(2)
-    day_s = str(start.day).zfill(2)
-    month_s = str(start.month).zfill(2)
+    min_s = date_pad(start.minute)
+    hour_s = date_pad(start.hour)
+    day_s = date_pad(start.day)
+    month_s = date_pad(start.month)
 
-    hour_e = str(end.hour).zfill(2)
-    min_e = str(end.minute).zfill(2)
-    day_e = str(end.day).zfill(2)
-    month_e = str(end.month).zfill(2)
+    hour_e = date_pad(end.hour)
+    min_e = date_pad(end.minute)
+    day_e = date_pad(end.day)
+    month_e = date_pad(end.month)
 
     base_date_s = "{0}-{1}-{2}".format(start.year, month_s, day_s)
     base_date_e = "{0}-{1}-{2}".format(end.year, month_e, day_e)
 
     # handling seconds - shop sec and round based on minutes
-    if s_diff < 60:
-        d1 = "{0}_{1}:{2}".format(base_date_s, hour_s, min_s)
-        d2 = "{0}_{1}:{2}".format(base_date_e, hour_e, min_e)
-        return d1 if d1 == d2 else "({0})|({1})".format(d1, d2)
+    if d_diff == 0:
+        if s_diff < 60:
+            d1 = "{0}_{1}:{2}".format(base_date_s, hour_s, min_s)
+            d2 = "{0}_{1}:{2}".format(base_date_e, hour_e, min_e)
+            return d1 if d1 == d2 else "{0}|{1}".format(d1, d2)
 
-    # handling minutes - shop minutes and round based on hour
-    if s_diff < 3600:
-        d1 = "{0}_{1}".format(base_date_s, hour_s)
-        d2 = "{0}_{1}".format(base_date_e, hour_e)
-        return d1 if d1 == d2 else "({0})|({1})".format(d1, d2)
+        # handling minutes - shop minutes and round based on hour
+        if s_diff < 3600:
+            d1 = "{0}_{1}".format(base_date_s, hour_s)
+            d2 = "{0}_{1}".format(base_date_e, hour_e)
+            return d1 if d1 == d2 else "{0}|{1}".format(d1, d2)
 
-    # if s_diff > 3600:
-    #     print s_diff
-    #     return "??? {date}".format(date=base_date_s)
+    if d_diff > 365:
+        return "{0}|{1}".format(start.year, end.year)
 
-    return None
+    tmp = datetime(start.year, start.month, start.day)
+    result = ["{0}-{1}".format(date_pad(start.year), date_pad(start.month))]
+    while tmp < end:
+        new_date = tmp + timedelta(days=1)
+        if new_date.month != tmp.month:
+            result.append("{0}-{1}".format(date_pad(new_date.year), date_pad(new_date.month)))
+        tmp = tmp + timedelta(days=1)
 
-
+    return "|".join(result)

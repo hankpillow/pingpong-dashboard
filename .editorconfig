@@ -1,16 +1,14 @@
-# -*- mode: conf-unix; -*-
-
 # EditorConfig is awesome: http://EditorConfig.org
 
-# top-most EditorConfig file
 root = true
 
-# defaults
 [*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
 insert_final_newline = true
 
-# 4 space indentation
-[*.{ini,py,py.tpl,rst}]
+[*.{py,py.tpl}]
 indent_style = space
 indent_size = 4
 
