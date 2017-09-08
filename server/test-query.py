@@ -40,13 +40,17 @@ def test_query_hosts():
     """
     from query import get_hosts
 
-    expected = list(["http://www.test.com.br/bar/","http://www.test.com.br/foo/","http://www.test.com.br/sub/foo/"])
+    expected = list([
+        "http://www.test.com.br/bar/",
+        "http://www.test.com.br/foo/",
+        "http://www.test.com.br/sub/foo/"
+    ])
     hosts = get_hosts()
     assert isinstance(hosts, list)
     assert len(hosts) == 3
     assert hosts == expected
 
-def test_query_time():
+def test_ag_selectedor():
     """ test query construction based on regex via ag
     """
     from query import get_ag_selector
@@ -70,6 +74,15 @@ def test_query_time():
     assert get_ag_selector(d1 - timedelta(days=100), d1) == "2016-09|2016-10|2016-11|2016-12|2017-01"
     assert get_ag_selector(d1 - timedelta(days=366), d1) == "2016|2017"
 
+def test_get_data():
+    """ test query construction based on regex via ag
+    """
+
+    from query import get_data, get_ag_selector
+    d = datetime(2017, 7, 15, 15, 0, 0)
+    # 2 hosts every minute
+    assert len(get_data(d - timedelta(seconds=60 * 60), d)) == 60 * 2
+    assert len(get_data(d - timedelta(seconds=60 * 60 * 6), d)) == 60 * 6 * 2
 
 if __name__ == "__main__":
-    test_query_time()
+    test_get_data()

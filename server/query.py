@@ -4,21 +4,34 @@ files and api request
 """
 
 from datetime import datetime, date, timedelta
-from subprocess import check_output
+import subprocess
 from subprocess import CalledProcessError
+from model import DATE_TEMPLATE
 
 def date_pad(val):
     """ return lpad string from given value
     """
     return str(val).zfill(2)
 
-def run_process(cmd, name=""):
+def run_process(cmd, name="", shell=True):
     """ run subprocess from given cmd and return the output
     """
+    print "running command: {0}".format(cmd.split(' '))
+
     try:
-        return check_output(cmd.split(' '))
-    except CalledProcessError:
-        raise Exception("{0}:: cant run this command: {1}".format(name, cmd))
+        proc = subprocess.Popen(
+            cmd if shell else cmd.split(" "),
+            shell=shell,
+            stderr=subprocess.PIPE, stdout=subprocess.PIPE
+        )
+        out, err = proc.communicate()
+        if not err:
+            return out
+        raise Exception(err)
+    except CalledProcessError as info:
+        raise Exception("{0}:: cant run this command: {1}\n{2}".format(name, cmd, info.message))
+    except BaseException as info:
+        raise Exception("{0}:: command {1} return error: {2}".format(name, cmd, info))
 
 def get_tail(qtd=10, path='./test/full.log'):
     """ return the last $qtd items from $path
@@ -56,6 +69,41 @@ def get_hosts(path='./test/full.log'):
         return filter(len, sorted(set(result.split('\n'))))
     except Exception:
         raise Exception('get_hosts:: cant handle result')
+
+def get_data(start, end=datetime.now(), path='./test/full.log'):
+    """ return a list of results matching date range
+    """
+
+    try:
+        selector = get_ag_selector(start, end)
+    except Exception as info:
+        raise Exception(
+            "get_data:: ag_selector cant handle {0}->{1} range.\nStack:{3}"
+            .format(start, end, info.message)
+        )
+
+    try:
+        cmd = 'ag "{0}" {1} --no-numbers --no-color'.format(selector, path)
+        result = run_process(cmd, "get_data")
+    except Exception as info:
+        raise Exception("get_data:: cant run command:{0}".format(info.message))
+
+
+    def clamp_date(line):
+        """check if line is within range
+        """
+        str_date = line.split(" ")[0]
+        try:
+            d = datetime.strptime(str_date, DATE_TEMPLATE)
+            return True if d >= start and d <= end else False
+        except Exception:
+            return False
+    try:
+        result = filter(len, sorted(set(result.split('\n'))))
+        result = filter(clamp_date, result)
+        return result
+    except Exception as info:
+        raise Exception('get_data:: cant handle result.\nStack:{0}'.format(info.message))
 
 def get_ag_selector(start, end=datetime.now()):
     """ create regex pattern to be used on ag commands
