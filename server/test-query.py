@@ -80,7 +80,9 @@ def test_get_data():
 
     from query import get_data, get_ag_selector
     d = datetime(2017, 7, 15, 15, 0, 0)
+
     # 2 hosts every minute
+    assert len(get_data(d - timedelta(seconds=60), d)) == 2
     assert len(get_data(d - timedelta(seconds=60 * 60), d)) == 60 * 2
     assert len(get_data(d - timedelta(seconds=60 * 60 * 6), d)) == 60 * 6 * 2
 
