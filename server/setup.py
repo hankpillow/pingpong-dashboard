@@ -33,12 +33,10 @@ setup(
     license='MIT',
     author='igor almeida',
     tests_require=['pytest'],
-    install_requires=['falcon'],
     cmdclass={'test': PyTest},
     packages=['pingpong'],
-    include_package_data=True,
+    include_package_data=False,
     platforms='any',
-    zip_safe=False,
     extras_require={
         'testing': ['pytest'],
       }
