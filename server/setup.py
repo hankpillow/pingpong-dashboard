@@ -13,7 +13,7 @@ from setuptools.command.test import test as TestCommand
 HERE = os.path.abspath(os.path.dirname(__file__))
 
 def read(*parts):
-    # intentionally *not* adding an encoding option to open
+    """intentionally *not* adding an encoding option to open"""
     return codecs.open(os.path.join(HERE, *parts), 'r').read()
 
 class PyTest(TestCommand):
