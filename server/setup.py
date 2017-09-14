@@ -1,20 +1,13 @@
+#!/usr/bin/env python
+
 """ project setup
 base config from https://github.com/jeffknupp/sandman/
 """
+
 from __future__ import print_function
-
-import codecs
-import os
 import sys
-
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
-
-HERE = os.path.abspath(os.path.dirname(__file__))
-
-def read(*parts):
-    """intentionally *not* adding an encoding option to open"""
-    return codecs.open(os.path.join(HERE, *parts), 'r').read()
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -28,16 +21,16 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 setup(
-    name='pingpong api',
+    name='pingpong-api',
+    version='0.1.0',
     url='http://github.com/hankpillow/pingpong-api/',
     license='MIT',
     author='igor almeida',
+    install_requires=['falcon>=1.3.0,<=2', 'gunicorn>=19,<20', 'Cython>=0.26,<=1'],
     tests_require=['pytest'],
+    test_suite="tests",
     cmdclass={'test': PyTest},
     packages=['pingpong'],
-    include_package_data=False,
-    platforms='any',
-    extras_require={
-        'testing': ['pytest'],
-      }
+    package_dir={'pingpong': './pingpong'},
+    include_package_data=True
 )
