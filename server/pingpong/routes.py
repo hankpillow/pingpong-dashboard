@@ -31,7 +31,6 @@ class RouteMiddleware(object):
 
         self.process_start = datetime.now()
         resp.set_header('Access-Control-Allow-Origin', '*')
-        resp.set_header('Response-Start', "{0}".format(self.process_start))
 
     def process_response(self, req, resp, resource, success):
         """ injects header with operation time """
@@ -39,4 +38,4 @@ class RouteMiddleware(object):
 
         duration = str((datetime.now() - self.process_start).microseconds / 1000)
         resp.set_header('Response-Time', "{0}".format(duration))
-        self.logger.info('route %s took %s', req.path, duration)
+        self.logger.info('%s took %sms', req.path, duration)
