@@ -3,26 +3,10 @@ falcon server to host api for handling
 pingpong image log
 """
 
-from api import PingPong
 import falcon
+from pingpong.routes import (Index, RouteMiddleware)
+from pingpong.api import OpenFile
 
-class View(object):
-    """default view with dashboard script"""
-
-    def on_get(self, request, response):
-        """static page"""
-        del request
-        response.content_type = "text/html"
-        response.body = '<html><body>foo</body></html>'
-
-class CorsMiddleware(object):
-    """this is exprimental and for studies pourposes, why not?"""
-
-    def process_request(self, request, response):
-        """inject controll access header"""
-        del request
-        response.set_header('Access-Control-Allow-Origin', '*')
-
-API = falcon.API(middleware=[CorsMiddleware()])
-API.add_route('/', View())
-API.add_route('/api/{start_date}', PingPong())
+api = falcon.API(middleware=RouteMiddleware())
+api.add_route('/', Index())
+api.add_route('/api/v1/back/{start_date}', OpenFile('../log/pingpong.log'))

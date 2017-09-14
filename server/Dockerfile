@@ -11,7 +11,7 @@ EXPOSE 8000
 
 WORKDIR /var/pingpong
 
-ADD ./src/*.py /var/pingpong/
-ADD ./src/*.html /var/pingpong/
+ADD ./pingpong/*.py /var/pingpong/
+ADD ./pingpong/*.html /var/pingpong/
 
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "server:API"]

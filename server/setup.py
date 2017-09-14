@@ -32,5 +32,6 @@ setup(
     cmdclass={'test': PyTest},
     packages=['pingpong'],
     package_dir={'pingpong': './pingpong'},
-    include_package_data=True
+    include_package_data=True,
+    zip_safe=False
 )

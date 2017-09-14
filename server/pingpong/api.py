@@ -1,6 +1,4 @@
-"""
-the api that consumes pingpong vm db
-TODO: fix db path
+"""the api that consumes pingpong vm db
 """
 
 import logging
@@ -9,16 +7,21 @@ import sys
 import json
 
 from datetime import datetime, timedelta
-from model import parse_line
+from pingpong.model import parse_line
 
 import falcon
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 LOGGER = logging.getLogger('[api]')
 
-DB_PATH = '/var/DB'
 DEFAULT_HOST = ""
 DEFAULT_TIME = timedelta(minutes=15)
+
+class BaseRoute(object):
+    """base class to inject and do things on every request"""
+    def __init__(self, db_path='./tests/db.sample'):
+        """ setup module """
+        self.db_path = db_path
 
 def get_timedelta(fmt, num):
     """return a timedelta fmt for given date"""
@@ -47,22 +50,21 @@ def sanitize_data(req, response, resource, params):
     params[date] = get_timedelta(result.group(2), int(result.group(1)))
 
 
-class PingPong(object):
-    """handle different api request routes"""
+class OpenFile(BaseRoute):
+    """handle request on format 10m, 4d, 40s """
 
     @falcon.before(sanitize_data)
-    def on_get(self, req, resp, start_date, host = ''):
+    def on_get(self, req, resp, start_date, host=''):
         """handle api for handling past time"""
         del req
 
-        # Handles GET requests
         LOGGER.info('querying back: %s and filter by host:%s', str(start_date), host)
-
         data = []
         min_date = datetime.now() - start_date
+        resp.body = str(min_date)
 
         try:
-            with open(DB_PATH, 'r') as database:
+            with open(self.db_path, 'r') as database:
 
                 for line in reversed(database.readlines()):
                     line = re.sub("\n$", "", line)
@@ -72,7 +74,6 @@ class PingPong(object):
                         continue
 
                     if chunk["date"] < min_date:
-                        LOGGER.info('stop searching after when hit %s', line)
                         break
 
                     if chunk["url"] == host or host == '':
@@ -83,5 +84,5 @@ class PingPong(object):
             LOGGER.error(error)
             raise falcon.HTTPError(falcon.HTTP_400, str(error))
 
-        LOGGER.info('got %s results', len(data))
+        resp.set_header('Response-Items', len(data))
         resp.body = json.dumps(data)
