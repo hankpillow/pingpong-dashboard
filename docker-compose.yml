@@ -13,10 +13,10 @@ services:
   server.local:
     image: pingpong-api
     build:
-      context: .
+      context: server
       dockerfile: Dockerfile
     ports:
       - 8000:8000
     volumes:
-      - ./server.py:/server.py
+      - ./server/:/var/pingpong
       - ./log/pingpong.log:/var/DB

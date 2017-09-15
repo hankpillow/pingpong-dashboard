@@ -20,7 +20,7 @@
       "babel-register"
     ],
     "files": [
-      "test/dashboard/*"
+      "test/*"
     ]
   },
   "babel": {
@@ -31,7 +31,7 @@
       "transform-object-rest-spread"
     ]
   },
-  "dependencies": {
+  "devDependencies": {
     "ava": "^0.21.0",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.1.1",
@@ -45,13 +45,11 @@
     "eslint-loader": "^1.9.0",
     "eslint-plugin-react": "^7.1.0",
     "husky": "^0.14.3",
-    "linkstate": "^1.0.1",
     "preact": "^8.2.1",
     "preact-redux": "^2.0.2",
     "ramda": "^0.24.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "setstate": "^1.0.2",
     "webpack": "^3.2.0",
     "webpack-dev-server": "^2.5.1"
   }
