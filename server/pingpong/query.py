@@ -5,6 +5,9 @@ files and api request
 
 import subprocess
 import re
+import logging
+
+LOGGER = logging.getLogger('[query]')
 
 from datetime import datetime, date, timedelta
 from pingpong.model import (DATE_TEMPLATE, parse_line)
@@ -19,7 +22,8 @@ def date_pad(val):
 def run_process(cmd, name="", shell=True):
     """ run subprocess from given cmd and return the output
     """
-    print "[run_process]::{0} {1}".format(name, cmd)
+
+    LOGGER.info("[run_process]::%s %s",name, cmd)
 
     try:
         proc = subprocess.Popen(
@@ -76,6 +80,7 @@ def get_hosts(path=DEFAULT_DB):
 def grep_data(start, end=datetime.now(), path=DEFAULT_DB, host=""):
     """ return a list of results matching date range
     """
+    LOGGER.info('querying data from:%s to %s', start, end)
 
     try:
         selector = get_ag_selector(start, end, host)
@@ -178,7 +183,9 @@ def get_ag_selector(start, end=datetime.now(), host=""):
     return "^({0}){1}".format("|".join(result), host_match)
 
 def find_data(start, end=datetime.now(), path=DEFAULT_DB, host=""):
-    """open the whole db and start matching date ranges """
+    """open the whole db and start matching date ranges
+    """
+    LOGGER.info('querying data from:%s to %s', start, end)
 
     data = []
     with open(path, 'r') as database:
