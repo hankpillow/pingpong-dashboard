@@ -1,4 +1,5 @@
-"""test pingpong model module
+"""
+test pingpong model module
 """
 
 from pytest import raises

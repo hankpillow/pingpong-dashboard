@@ -1,4 +1,5 @@
-"""import all package modules
+"""
+import all package modules
 """
 
 import pingpong

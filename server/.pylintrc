@@ -12,7 +12,7 @@ profile=no
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=.git,scripts,docs,dist 
+ignore=.git,scripts,docs,dist
 
 # Pickle collected data for later comparisons.
 persistent=yes
@@ -38,7 +38,7 @@ load-plugins=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use"--disable=all --enable=classes
 # --disable=W"
-disable=maybe-no-member,pointless-string-statement,import-error,no-name-in-module,star-args,no-member
+disable=maybe-no-member,pointless-string-statement,import-error,no-name-in-module,star-args,no-member,too-few-public-methods
 
 
 [REPORTS]

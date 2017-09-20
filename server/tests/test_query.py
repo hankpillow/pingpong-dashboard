@@ -1,4 +1,5 @@
-"""test query module
+"""
+test query module
 """
 
 from datetime import datetime, timedelta
