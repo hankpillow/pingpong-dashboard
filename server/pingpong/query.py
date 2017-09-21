@@ -6,12 +6,10 @@ files and api request
 import subprocess
 import re
 import logging
-
-LOGGER = logging.getLogger('[query]')
-
 from datetime import datetime, date, timedelta
 from pingpong.model import (DATE_TEMPLATE, parse_line)
 
+LOGGER = logging.getLogger('[query]')
 DEFAULT_DB = 'tests/db.sample'
 
 def date_pad(val):
@@ -23,7 +21,7 @@ def run_process(cmd, name="", shell=True):
     """ run subprocess from given cmd and return the output
     """
 
-    LOGGER.info("[run_process]::%s %s",name, cmd)
+    LOGGER.info("(%s) %s", name, cmd)
 
     try:
         proc = subprocess.Popen(
@@ -80,12 +78,12 @@ def get_hosts(path=DEFAULT_DB):
 def grep_data(start, end=datetime.now(), path=DEFAULT_DB, host=""):
     """ return a list of results matching date range
     """
-    LOGGER.info('querying data from:%s to %s', start, end)
+    LOGGER.info('start:%s => end:%s', start, end)
 
     try:
         selector = get_ag_selector(start, end, host)
     except Exception as info:
-        msg = "grep_data:: ag_selector cant handle from:{0} => to:{1}\nerror:{2}"
+        msg = "grep_data:: ag_selector cant handle start:{0} => end:{1}\nerror:{2}"
         raise Exception(msg.format(str(start), str(end), info.message))
 
     try:
@@ -117,6 +115,36 @@ def grep_data(start, end=datetime.now(), path=DEFAULT_DB, host=""):
 
     except Exception as info:
         raise Exception('grep_data:: cant handle result.\nStack:{0}'.format(info.message))
+
+def find_data(start, end=datetime.now(), path=DEFAULT_DB, host=""):
+    """open the whole db and start matching date ranges
+    """
+    LOGGER.info('querying data from:%s to %s', start, end)
+
+    data = []
+    with open(path, 'r') as database:
+
+        for line in reversed(database.readlines()):
+            line = re.sub("\n$", "", line)
+            chunk = parse_line(line)
+
+            if not chunk:
+                continue
+
+            """
+            considering that log is sorted by date
+            this could left date out of result!
+            grep_data is recommended.
+            """
+            if chunk["date"] < start:
+                break
+
+            if chunk["date"] < end:
+                if chunk["url"] == host or host == '':
+                    chunk["date"] = unicode(chunk["date"])
+                    data.append(chunk)
+
+    return data
 
 def get_ag_selector(start, end=datetime.now(), host=""):
     """ create regex pattern to be used on ag commands
@@ -153,21 +181,19 @@ def get_ag_selector(start, end=datetime.now(), host=""):
     # handling seconds - shop sec and round based on minutes
     if d_diff == 0:
         if s_diff < 60:
-            DATE1 = "{0}_{1}:{2}".format(base_date_s, hour_s, min_s)
-            DATE2 = "{0}_{1}:{2}".format(base_date_e, hour_e, min_e)
-            if DATE1 == DATE2:
-                return "^({0}){1}".format(DATE1, host_match)
-            else:
-                return "^({0}|{1}){2}".format(DATE1, DATE2, host_match)
+            date_1 = "{0}_{1}:{2}".format(base_date_s, hour_s, min_s)
+            date_2 = "{0}_{1}:{2}".format(base_date_e, hour_e, min_e)
+            if date_1 == date_2:
+                return "^({0}){1}".format(date_1, host_match)
+            return "^({0}|{1}){2}".format(date_1, date_2, host_match)
 
         # handling minutes - shop minutes and round based on hour
         if s_diff < 3600:
-            DATE1 = "{0}_{1}".format(base_date_s, hour_s)
-            DATE2 = "{0}_{1}".format(base_date_e, hour_e)
-            if DATE1 == DATE2:
-                return "^({0}){1}".format(DATE1, host_match)
-            else:
-                return "^({0}|{1}){2}".format(DATE1, DATE2, host_match)
+            date_1 = "{0}_{1}".format(base_date_s, hour_s)
+            date_2 = "{0}_{1}".format(base_date_e, hour_e)
+            if date_1 == date_2:
+                return "^({0}){1}".format(date_1, host_match)
+            return "^({0}|{1}){2}".format(date_1, date_2, host_match)
 
     if d_diff > 365:
         return "^({0}|{1}){2}".format(start.year, end.year, host_match)
@@ -181,33 +207,3 @@ def get_ag_selector(start, end=datetime.now(), host=""):
         tmp = tmp + timedelta(days=1)
 
     return "^({0}){1}".format("|".join(result), host_match)
-
-def find_data(start, end=datetime.now(), path=DEFAULT_DB, host=""):
-    """open the whole db and start matching date ranges
-    """
-    LOGGER.info('querying data from:%s to %s', start, end)
-
-    data = []
-    with open(path, 'r') as database:
-
-        for line in reversed(database.readlines()):
-            line = re.sub("\n$", "", line)
-            chunk = parse_line(line)
-
-            if not chunk:
-                continue
-
-            """
-            considering that log is sorted by date
-            this could left date out of result!
-            grep_data is recommended.
-            """
-            if chunk["date"] < start:
-                break
-
-            if chunk["date"] < end:
-                if chunk["url"] == host or host == '':
-                    chunk["date"] = unicode(chunk["date"])
-                    data.append(chunk)
-
-    return data
