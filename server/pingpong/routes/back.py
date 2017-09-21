@@ -14,7 +14,7 @@ def sanitize_param(req, resp, resource, params):
     del resp
     del resource
 
-    params["host"] = req.get_param("host", default="")
+    params["url"] = req.get_param("url", default="")
 
     if params["time_passed"]:
         params["end"] = datetime.now()
@@ -47,8 +47,11 @@ class Back(BaseRoute):
     Keep in mind that the longer you back in time the bigger will be the result
     """
 
+    def __init__(self, db_path=None, name="back"):
+        super(Back, self).__init__(db_path, name)
+
     @falcon.before(sanitize_param)
-    def on_get(self, req, resp, version, time_passed, start, end, host):
+    def on_get(self, req, resp, version, time_passed, start, end, url):
         """
         handles api/{versio}/back/{time_passed} routes
 
@@ -75,14 +78,16 @@ class Back(BaseRoute):
             return
 
         try:
+            self.logger.info('start:%s => end:%s', start, end)
             if version == "v1":
-                result = find_data(start, end, self.db_path, host)
+                result = find_data(start, end, self.db_path, url)
             elif version == "v2":
-                result = grep_data(start, end, self.db_path, host)
+                result = grep_data(start, end, self.db_path, url)
 
             resp.set_header('X-Start-Date', str(start))
             resp.set_header('X-End-Date', str(end))
             resp.set_header('Query-Items', len(result))
+            self.logger.info('found %s items', len(result))
 
             resp.body = json.dumps(result)
 

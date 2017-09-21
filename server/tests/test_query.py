@@ -38,13 +38,13 @@ def test_query_head():
 def test_query_hosts():
     """ test for sorting hosts
     """
-    from pingpong.query import get_hosts
+    from pingpong.query import get_urls
 
     expected = list([
         "http://www.test.com.br/bar/",
         "http://www.test.com.br/foo/"
     ])
-    hosts = get_hosts()
+    hosts = get_urls()
     assert isinstance(hosts, list)
     assert len(hosts) == 2
     assert hosts == expected
@@ -102,13 +102,13 @@ def test_grep_data():
     now = datetime(2017, 7, 15, 15, 0, 0)
 
     # 2 hosts every minute
-    tmp = 'http://www.test.com.br/foo/'
+    url = 'http://www.test.com.br/foo/'
 
     assert len(grep_data(now - timedelta(seconds=60), now)) == 2
-    assert len(grep_data(now - timedelta(seconds=60), now, host=tmp)) == 1
+    assert len(grep_data(now - timedelta(seconds=60), now, url=url)) == 1
 
     assert len(grep_data(now - timedelta(seconds=60 * 60), now)) == 60 * 2
-    assert len(grep_data(now - timedelta(seconds=60 * 60), now, host=tmp)) == 60
+    assert len(grep_data(now - timedelta(seconds=60 * 60), now, url=url)) == 60
 
     assert len(grep_data(now - timedelta(seconds=60 * 60 * 6), now)) == 60 * 6 * 2
-    assert len(grep_data(now - timedelta(seconds=60 * 60 * 6), now, host=tmp)) == 60 * 6
+    assert len(grep_data(now - timedelta(seconds=60 * 60 * 6), now, url=url)) == 60 * 6

@@ -12,4 +12,4 @@ class BaseRoute(object):
     def __init__(self, db_path='./tests/db.sample', name='baseroute'):
         """ setup module """
         self.db_path = db_path
-        self.logger = logging.getLogger('[{0}]'.format(name))
+        self.logger = logging.getLogger('[api/{0}]'.format(name))
