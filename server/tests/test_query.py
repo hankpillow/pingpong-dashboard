@@ -15,10 +15,10 @@ def test_query_tail():
         get_tail(-100)
         get_tail(True)
         get_tail([True])
+        get_tail(0)
 
-    assert get_tail(0) == ""
-    assert len(get_tail(0).split("\n")) == 1
-    assert len(get_tail(5).split("\n")) == 6
+    assert len(get_tail(1)) == 1
+    assert len(get_tail(5)) == 5
 
 def test_query_head():
     """ test for tail methods
@@ -30,10 +30,10 @@ def test_query_head():
         get_head(-100)
         get_head(True)
         get_head([True])
+        get_head(0)
 
-    assert get_head(0) == ""
-    assert len(get_head(0).split("\n")) == 1
-    assert len(get_head(5).split("\n")) == 6
+    assert len(get_head(1)) == 1
+    assert len(get_head(5)) == 5
 
 def test_query_hosts():
     """ test for sorting hosts

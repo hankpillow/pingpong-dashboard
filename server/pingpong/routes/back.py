@@ -53,9 +53,9 @@ class Back(BaseRoute):
     @falcon.before(sanitize_param)
     def on_get(self, req, resp, version, time_passed, start, end, url):
         """
-        handles api/{versio}/back/{time_passed} routes
+        handles api/v{version}/back/{time_passed} routes
 
-        :param version: must match r'^v(1|2)'
+        :param version: must be 1 or 2
         :param time_passed: must match r'^\d+(m|h|d)'
         :param start: provided by decorator
         :param end: provided by decorator
@@ -72,16 +72,21 @@ class Back(BaseRoute):
         """
         del req, time_passed
 
-        if not re.match(r'^v(1|2)', version):
+        if version != 1 and version != 2:
             resp.status = falcon.HTTP_500
-            resp.body = "unexpected api version: {0}".format(version)
+            resp.body = "unexpected api version: {0}.".format(version)
             return
 
         try:
             self.logger.info('start:%s => end:%s', start, end)
-            if version == "v1":
+            result = []
+
+            if version == 1:
+                # open regular file
                 result = find_data(start, end, self.db_path, url)
-            elif version == "v2":
+
+            elif version == 2:
+                # grep (ag) content from file
                 result = grep_data(start, end, self.db_path, url)
 
             resp.set_header('X-Start-Date', str(start))

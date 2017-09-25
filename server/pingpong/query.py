@@ -12,6 +12,13 @@ from pingpong.model import (DATE_TEMPLATE, parse_line)
 LOGGER = logging.getLogger('[query]')
 DEFAULT_DB = 'tests/db.sample'
 
+def to_str_date(chunk):
+    """
+    convert datetime to string
+    """
+    chunk['date'] = unicode(chunk["date"])
+    return chunk
+
 def date_pad(val):
     """
     return lpad string from given value
@@ -31,42 +38,52 @@ def run_process(cmd, name="", shell=True):
             shell=shell,
             stderr=subprocess.PIPE, stdout=subprocess.PIPE
         )
+
         out, err = proc.communicate()
+
         if not err:
             return out
+
         raise Exception(err)
+
     except subprocess.CalledProcessError as info:
         raise Exception("{0}:: cant run this command: {1}\n{2}".format(name, cmd, info.message))
+
     except BaseException as info:
         raise Exception("{0}:: command {1} return error: {2}".format(name, cmd, info))
+
+def get_edges(cmd, name="edge"):
+    """
+    used by tail/head to return the first/last N itens
+    """
+    try:
+        result = run_process(cmd, name)
+        result = filter(len, sorted(set(result.split('\n'))))
+        result = map(parse_line, result)
+        return map(to_str_date, result)
+
+    except Exception:
+        raise Exception('get_tail:: cant handle result')
 
 def get_tail(qtd=10, path=DEFAULT_DB):
     """
     return the last $qtd items from $path
     """
-
-    if isinstance(qtd, bool) or not isinstance(qtd, int):
-        raise Exception("get_tail:: qtd must be an int")
-
     if qtd < 1:
-        return ''
+        raise Exception("get_tail:: qtd must be an int > 0")
 
     cmd = "tail -n{0} {1}".format(qtd, path)
-    return run_process(cmd, "get_tail")
+    return get_edges(cmd, "get_tail")
 
 def get_head(qtd=10, path=DEFAULT_DB):
     """
     return the first $qtd items from $path
     """
-
-    if isinstance(qtd, bool) or not isinstance(qtd, int):
+    if qtd < 1:
         raise Exception("get_head:: qtd must be an int")
 
-    if qtd < 1:
-        return ''
-
     cmd = "head -{0} {1}".format(qtd, path)
-    return run_process(cmd, "get_head")
+    return get_edges(cmd, "get_head")
 
 def get_urls(path=DEFAULT_DB):
     """
@@ -107,13 +124,6 @@ def grep_data(start, end=datetime.now(), path=DEFAULT_DB, url=""):
             return True if tmpdate >= start and tmpdate <= end else False
         except ValueError:
             return False
-
-    def to_str_date(chunk):
-        """
-        convert datetime to string
-        """
-        chunk['date'] = unicode(chunk["date"])
-        return chunk
 
     try:
         result = filter(len, sorted(set(result.split('\n'))))
