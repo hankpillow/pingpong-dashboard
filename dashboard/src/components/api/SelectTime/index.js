@@ -5,7 +5,7 @@ import dispatcher from './dispatcher'
 const SelectTime = ({busy, load}) => {
 
 	let getSelected = evt => {
-		const target = evt.target 
+		const target = evt.target
 		const value = target.options[target.selectedIndex].value
 		if (value.length) load(evt.target.form.action + value)
 	}
@@ -19,11 +19,11 @@ const SelectTime = ({busy, load}) => {
 			<label>
 				<select onChange={getSelected}>
 					<option value="">Select how far you data is...</option>
-					<option value="30m">last 30min</option>
-					<option value="24h">last 24h</option>
-					<option value="7d">last week</option>
-					<option value="31d">last month</option>
-					<option value="90d">90 days</option>
+					<option value="tail/100">last 100 samples</option>
+					<option value="v2/back/30m">back 30min</option>
+					<option value="v2/back/24h">back 24h</option>
+					<option value="v2/back/7d">back one week</option>
+					<option value="v2/back/30d">back one month</option>
 				</select>
 			</label>
 		</form>

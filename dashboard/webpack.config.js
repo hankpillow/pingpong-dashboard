@@ -10,7 +10,7 @@ module.exports = function(env) {
 	let config = {
 
 		entry: {
-			dashboard: './dashboard'
+			dashboard: './src'
 		},
 
 		output: {
@@ -21,10 +21,10 @@ module.exports = function(env) {
 		resolve: {
 			modules: ['node_modules'],
 			alias: {
-				modules: path.resolve(__dirname + '/dashboard/modules'),
-				stores: path.resolve(__dirname + '/dashboard/stores'),
-				components: path.resolve(__dirname + '/dashboard/components'),
-				insights: path.resolve(__dirname + '/dashboard/components/insights')
+				modules: path.resolve(__dirname + '/src/modules'),
+				stores: path.resolve(__dirname + '/src/stores'),
+				components: path.resolve(__dirname + '/src/components'),
+				insights: path.resolve(__dirname + '/src/components/insights')
 			}
 		},
 
