@@ -1,7 +1,7 @@
 //@see https://stackoverflow.com/questions/1551382/user-friendly-time-format-in-python
 //TODO allow int as args
 const moment = (time, now = new Date()) => {
-	let diff = now
+	let diff
 
 	try {
 		if (typeof time === 'string' && isNaN(Date.parse(time)) === false) {

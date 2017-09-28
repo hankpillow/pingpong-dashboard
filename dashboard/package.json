@@ -13,7 +13,7 @@
     "version": "npm run build",
     "portversion": "git push origin --tags",
     "build": "webpack --env=production",
-    "dev": "webpack-dev-server --inline --env=development"
+    "dev": "webpack-dev-server --inline --hot --env=development"
   },
   "ava": {
     "require": [

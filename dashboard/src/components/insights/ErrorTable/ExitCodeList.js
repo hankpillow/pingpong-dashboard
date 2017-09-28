@@ -13,21 +13,30 @@ const groupEq = list => {
 	return Object.keys(g).map(code => g[code])
 }
 
+const getErrorLine = (key, href, text, times, percentage) => {
+	return (<li key={key}>
+		<a target={'_blank'} href={href}>{text}</a>
+		<sup className={'times'}>{times}</sup>
+		<sub className={'percent'}>{percentage}%</sub>
+	</li>)
+}
+
 const ExitCodeList = ({data}) => {
 
-	if (!data || (data && data.length === 0)) return ' - '
+	if (!data || !data.length) return ' - '
 
 	const group = groupEq(data)
-	return (<ul>
-		{group.map(errGroup => {
+	const list = group.map((errGroup, index) => {
 			const errCode = errGroup[0]
 			const errText = prettyError(getCodeMsg(errCode))
 			const errUrl = getURL(getCodeMsg(errCode))
 			const times = errGroup.length + ' time' + (errGroup.length > 1 ? 's' : '')
 			const percentage = (errGroup.length / data.length * 100).toPrecision(3)
-			return (<li><a target={'_blank'} href={errUrl}>{errText}</a> ({times}/{percentage}%)</li>)
-		})}
-	</ul>)
+			const key = (errCode + '-' + index)
+			return getErrorLine(key, errUrl, errText, times, percentage)
+		})
+
+	return (<ul>{list}</ul>)
 }
 
 export default ExitCodeList

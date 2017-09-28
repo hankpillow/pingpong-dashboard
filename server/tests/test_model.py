@@ -1,5 +1,8 @@
 """
 test pingpong model module
+TODO:
+    test model id
+    test routes
 """
 
 from pytest import raises

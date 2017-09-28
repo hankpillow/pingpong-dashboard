@@ -2,9 +2,17 @@
 this modules handles creating dict from samples
 """
 
+import hashlib
 from datetime import datetime
 
 DATE_TEMPLATE = "%Y-%m-%d_%H:%M:%S"
+
+def create_hash(url, date):
+    """create an id from given url and date"""
+    hash = hashlib.sha1()
+    hash.update("{0}::{1}".format(url, str(date)))
+    return hash.hexdigest()
+
 
 def parse_date(date):
     """ return date object following data template model
@@ -28,9 +36,13 @@ def format_sample(arr):
     if len(arr) != 11:
         raise Exception("format_sample:: expected size 11")
 
+    url = str(arr[10])
+    date = parse_date(arr[0])
+
     return {
+        "id": create_hash(url, date),
         "type": "sample",
-        "date": parse_date(arr[0]),
+        "date": date,
         "http_code": arr[1],
         "time_namelookup": arr[2],
         "time_connect": arr[3],
@@ -40,7 +52,7 @@ def format_sample(arr):
         "time_starttransfer": arr[7],
         "time_total": arr[8],
         "num_redirects": arr[9],
-        "url": str(arr[10])
+        "url": url
     }
 
 def format_error(arr):
@@ -56,12 +68,11 @@ def format_error(arr):
     if arr[1][0] != '!':
         raise Exception("format_error:: expected format has ! as first char on column 2")
 
-    try:
-        date = parse_date(arr[0])
-    except ValueError:
-        return None
+    date = parse_date(arr[0])
+    url = str(arr[2])
 
     return {
+        "id": create_hash(url, date),
         "type": "error",
         "date": date,
         "exit_code": arr[1][1:],

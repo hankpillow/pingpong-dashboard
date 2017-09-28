@@ -6,7 +6,7 @@ const dispatcher = (dispatch) => {
 	return {
 			load: (query) => {
 				//TO-DO remove this hardcoded host
-				query += '?host=http://www.honda.com.br/motos/'
+				query += '?url=http://www.honda.com.br/motos/'
 				dispatch({query, type: typeFecth})
 
 				fetch(query)

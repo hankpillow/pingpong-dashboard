@@ -6,10 +6,25 @@ import ExitCodeList from './ExitCodeList'
 
 const ErrorTable = ({data, prettyFormat, total}) => {
 	const groups = Object.keys(data)
-	
+
 	if (groups.length === 0){
 		return (<p>nothing to show</p>)
 	}
+
+
+	const body = groups.map((group, index) => {
+
+			const dateColumn = prettyFormat(group)
+			const groupList = data[group]
+			const errList = R.pluck('exit_code', groupList)
+
+			return (<tr key={'error-' + group}>
+				<td>{dateColumn}</td>
+				<td>{groupList.length}</td>
+				<td>{(groupList.length / total * 100).toPrecision(3)}%</td>
+				<td><ExitCodeList data={errList} /></td>
+			</tr>)
+		})
 
 	return (<div className={'data-group'}>
 		<table>
@@ -21,19 +36,7 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 					<th>curl error code</th>
 				</tr>
 			</thead>
-			<tbody>
-				{groups.map(group => {
-					const dateColumn = prettyFormat(group)
-					const groupList = data[group]
-					const errList = R.pluck('exit_code', groupList)
-					return (<tr>
-							<td>{dateColumn}</td>
-							<td>{groupList.length}</td>
-							<td>{(groupList.length/total*100).toPrecision(3)}%</td>
-							<td><ExitCodeList data={errList} /></td>
-						</tr>)
-				})}
-			</tbody>
+			<tbody>{body}</tbody>
 		</table>
 	</div>)
 }
