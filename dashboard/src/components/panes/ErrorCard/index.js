@@ -5,14 +5,13 @@ import ErrorTable from 'insights/ErrorTable'
 import DataGroup from 'insights/DataGroup'
 
 const ErrorCard = ({data}) => {
+	const msg = data.length ? data.length : ''
 	return (<div className={'error-wrapper'}>
-			<h3>Error list {data.length ? `(${data.length})` : ''}</h3>
-			{data.length > 0 && 
-				<p>
+			<h3>Error list {msg}</h3>
+			{data.length > 0 && <p>
 				Group data by:
 				<DataGroup />
-			</p>
-			}
+			</p>}
 			<ErrorTable />
 		</div>)
 }
