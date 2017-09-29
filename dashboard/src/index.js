@@ -7,13 +7,19 @@ import store from 'stores'
 
 // components
 import Api from 'components/api'
-import Panes from 'components/panes'
+import Uptime from 'insights/Uptime'
+import ErrorTable from 'insights/ErrorTable'
 
 render(
 	<Provider store={store}>
-		<main>
-			<Api />
-			<Panes />
-		</main>
+		<div>
+			<header>
+				<Api />
+			</header>
+			<main>
+				<Uptime />
+				<ErrorTable />
+			</main>
+		</div>
 	</Provider>
 , document.body)

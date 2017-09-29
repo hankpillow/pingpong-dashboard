@@ -3,8 +3,10 @@ import {connect} from 'preact-redux'
 import R from 'ramda'
 
 import DataGroup from 'insights/DataGroup'
+import {getUptime} from 'modules/insights'
 
-const SamplesTable = ({data, prettyFormat, total}) => {
+const SamplesTable = ({data, prettyFormat}) => {
+
 	const groups = Object.keys(data)
 
 	if (groups.length === 0) return ""
@@ -17,40 +19,41 @@ const SamplesTable = ({data, prettyFormat, total}) => {
 			const groupList = data[group]
 
 			const columnDate = prettyFormat(group)
-			const columnChecks = groupList.length
-			const columnPercent = (groupList.length / total * 100).toPrecision(3)
+			const columnUptime = getUptime(groupList) * 100
+			const columnItems = groupList.length
 
-			faster = faster !== undefined ? Math.min(faster, columnPercent) : columnPercent
-			slower = slower !== undefined ? Math.max(slower, columnPercent) : columnPercent
+			faster = faster !== undefined ? Math.max(faster, columnUptime) : columnUptime
+			slower = slower !== undefined ? Math.min(slower, columnUptime) : columnUptime
 
-			return {group, columnDate, groupList, columnChecks, columnPercent}
+			return {columnDate, columnUptime, columnItems}
 
-		}).map(({group, columnDate, columnChecks, columnPercent}) => {
+		}).map(({columnDate, columnItems, columnUptime}, index) => {
 
 			let statusClass = ''
 
 			if (slower == faster) {
 				statusClass = ''
-			} if (columnPercent == slower) {
+			} else if (columnUptime == slower) {
 				statusClass = 'higher'
-			} else if (columnPercent == faster) {
+			} else if (columnUptime == faster) {
 				statusClass = 'lower'
 			}
 
-			return (<tr className={statusClass} key={'error-' + group}>
+			return (<tr className={statusClass} key={'uptime-' + index}>
 				<td>{columnDate}</td>
-				<td>{columnChecks}</td>
-				<td>{columnPercent}%</td>
+				<td>{columnItems}</td>
+				<td>{columnUptime}%</td>
 			</tr>)
 		})
 
-	return (<div>
+	return (<div className={'insight'}>
+		<h2>Uptime:</h2>
 		<table>
 			<thead>
 				<tr>
 					<th><DataGroup /></th>
-					<th>checks</th>
-					<th>%</th>
+					<th>items</th>
+					<th>uptime</th>
 				</tr>
 			</thead>
 			<tbody>{body}</tbody>
@@ -61,10 +64,9 @@ const SamplesTable = ({data, prettyFormat, total}) => {
 const resolveFormat = R.curry((format, value) => format(value))
 
 export default connect(({samples}) => {
-	const total = samples.data.length
 	const data = samples.group.groupBy(samples.data)
 	const prettyFormat = resolveFormat(samples.group.groupPretty)
 
-	return {data, prettyFormat, total}
+	return {data, prettyFormat}
 
 }, null)(SamplesTable)

@@ -19,7 +19,7 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 
 			const columnDate = prettyFormat(group)
 			const columnChecks = groupList.length
-			const columnPercent = (groupList.length / total * 100).toPrecision(3)
+			const columnPercent = (groupList.length / total * 100).toPrecision(2)
 			const errList = R.pluck('exit_code', groupList)
 
 			faster = faster !== undefined ? Math.min(faster, columnPercent) : columnPercent
@@ -42,12 +42,13 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 			return (<tr className={statusClass} key={'error-' + index}>
 				<td>{columnDate}</td>
 				<td>{columnChecks}</td>
-				<td>{columnPercent}%</td>
+				<td>{columnPercent}</td>
 				<td><ExitCodeList data={errList} /></td>
 			</tr>)
 		})
 
-	return (<div>
+	return (<div className={'insight'}>
+		<h2>Error list:</h2>
 		<table>
 			<thead>
 				<tr>
@@ -64,8 +65,8 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 
 const resolveFormat = R.curry((format, value) => format(value))
 
-export default connect(({errors}) => {
-	const total = errors.data.length
+export default connect(({samples, errors}) => {
+	const total = samples.data.length + errors.data.length
 	const data = errors.group.groupBy(errors.data)
 	const prettyFormat = resolveFormat(errors.group.groupPretty)
 
