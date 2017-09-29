@@ -4,9 +4,12 @@ import {h} from 'preact'
 import SelectTime from './SelectTime'
 
 const API = ({busy}) => {
+
+	const status = busy ? 'loading...' : 'ready'
+
 	return (<div>
 			<div className={'status'}>
-				<span>api: {busy ? 'loading...' : 'ready'}</span>
+				<span>{status}</span>
 			</div>
 			<SelectTime />
 		</div>

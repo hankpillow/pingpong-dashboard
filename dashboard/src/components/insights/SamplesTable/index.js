@@ -3,9 +3,8 @@ import {connect} from 'preact-redux'
 import R from 'ramda'
 
 import DataGroup from 'insights/DataGroup'
-import ExitCodeList from './ExitCodeList'
 
-const ErrorTable = ({data, prettyFormat, total}) => {
+const SamplesTable = ({data, prettyFormat, total}) => {
 	const groups = Object.keys(data)
 
 	if (groups.length === 0) return ""
@@ -20,30 +19,28 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 			const columnDate = prettyFormat(group)
 			const columnChecks = groupList.length
 			const columnPercent = (groupList.length / total * 100).toPrecision(3)
-			const errList = R.pluck('exit_code', groupList)
 
 			faster = faster !== undefined ? Math.min(faster, columnPercent) : columnPercent
 			slower = slower !== undefined ? Math.max(slower, columnPercent) : columnPercent
 
-			return {columnDate, groupList, columnChecks, columnPercent, errList}
+			return {group, columnDate, groupList, columnChecks, columnPercent}
 
-		}).map(({columnDate, columnChecks, columnPercent, errList}, index) => {
+		}).map(({group, columnDate, columnChecks, columnPercent}) => {
 
 			let statusClass = ''
 
-			if (slower == faster || groups.length <= 1) {
+			if (slower == faster) {
 				statusClass = ''
-			} else if (columnPercent == slower) {
+			} if (columnPercent == slower) {
 				statusClass = 'higher'
 			} else if (columnPercent == faster) {
 				statusClass = 'lower'
 			}
 
-			return (<tr className={statusClass} key={'error-' + index}>
+			return (<tr className={statusClass} key={'error-' + group}>
 				<td>{columnDate}</td>
 				<td>{columnChecks}</td>
 				<td>{columnPercent}%</td>
-				<td><ExitCodeList data={errList} /></td>
 			</tr>)
 		})
 
@@ -54,7 +51,6 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 					<th><DataGroup /></th>
 					<th>checks</th>
 					<th>%</th>
-					<th>curl error code</th>
 				</tr>
 			</thead>
 			<tbody>{body}</tbody>
@@ -64,11 +60,11 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 
 const resolveFormat = R.curry((format, value) => format(value))
 
-export default connect(({errors}) => {
-	const total = errors.data.length
-	const data = errors.group.groupBy(errors.data)
-	const prettyFormat = resolveFormat(errors.group.groupPretty)
+export default connect(({samples}) => {
+	const total = samples.data.length
+	const data = samples.group.groupBy(samples.data)
+	const prettyFormat = resolveFormat(samples.group.groupPretty)
 
 	return {data, prettyFormat, total}
 
-}, null)(ErrorTable)
+}, null)(SamplesTable)

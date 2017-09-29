@@ -2,20 +2,19 @@ import {h} from 'preact'
 import {connect} from 'preact-redux'
 
 import ErrorTable from 'insights/ErrorTable'
-import DataGroup from 'insights/DataGroup'
 
 const ErrorCard = ({data}) => {
+
+	if (data.length == 0) return ""
+
 	const msg = data.length ? data.length : ''
-	return (<div className={'error-wrapper'}>
+
+	return (<section className={'error-wrapper'}>
 			<h3>Error list {msg}</h3>
-			{data.length > 0 && <p>
-				Group data by:
-				<DataGroup />
-			</p>}
 			<ErrorTable />
-		</div>)
+		</section>)
 }
 
-export default connect(state => {
-	return {data: state.error.data}
+export default connect(({errors}) => {
+	return {data: errors.data}
 }, null)(ErrorCard)
