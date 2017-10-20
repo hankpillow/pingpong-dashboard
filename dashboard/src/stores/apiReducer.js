@@ -2,16 +2,16 @@ import {typeError, typeLoaded, typeFecth} from 'components/api/SelectTime/dispat
 
 const DEFAULT_STATE = {
 	busy: false,
-	errorMsg: '',
+	message: '',
 	query: ''
 }
 
 export default (state, action) => {
-	
+
 	if (!state)	return {
 			...DEFAULT_STATE
 		}
-	
+
 	switch(action.type) {
 
 		case typeFecth: return {
@@ -24,12 +24,12 @@ export default (state, action) => {
 				...state,
 				busy: false,
 			}
-		
+
 		case typeError: return {
-			...DEFAULT_STATE,
-			errorMsg: action.payload.error
+			busy: false,
+			message: action.message
 		}
-		
+
 		default:
 			return state
 	}
