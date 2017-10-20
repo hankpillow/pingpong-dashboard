@@ -1,13 +1,13 @@
 import {defaultPayload, type as GroupAction} from 'insights/DataGroup/dispatcher'
 import {typeLoaded as APILoaded} from 'components/api/SelectTime/dispatcher'
-import {toDate, filterSample} from 'modules/data'
+import {toDate} from 'modules/data'
 
 const DEFAULT_STATE = {
 	group: defaultPayload,
 	data: [],
 }
 
-export default (state, action) => {
+export default (filter) => (state, action) => {
 
 	if (!state)	return {
 		...DEFAULT_STATE
@@ -17,7 +17,7 @@ export default (state, action) => {
 
 		case APILoaded: return {
 			...state,
-			data: toDate(filterSample(action.payload))
+			data: toDate(filter(action.payload))
 		}
 
 		case GroupAction: return {

@@ -1,9 +1,12 @@
 import thunk from 'redux-thunk'
 import {createStore, applyMiddleware, compose, combineReducers} from 'redux'
+import {filterSample, filterError} from 'modules/data'
 
 import api from './apiReducer'
-import errors from './errorReducer'
-import samples from './samplesReducer'
+import data from './dataReducer'
+
+const samples = data(filterSample)
+const errors = data(filterError)
 
 const middleware = window.__REDUX_DEVTOOLS_EXTENSION__ ?
 			compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__()) :
