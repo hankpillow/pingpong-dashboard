@@ -9,6 +9,7 @@ import store from 'stores'
 import Api from 'components/api'
 import Uptime from 'insights/Uptime'
 import ErrorTable from 'insights/ErrorTable'
+import FirstByte from 'insights/FirstByte'
 
 render(
 	<Provider store={store}>
@@ -18,6 +19,7 @@ render(
 			</header>
 			<main>
 				<Uptime />
+				<FirstByte />
 				<ErrorTable />
 			</main>
 		</div>

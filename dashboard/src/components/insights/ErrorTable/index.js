@@ -2,7 +2,7 @@ import {h} from 'preact'
 import {connect} from 'preact-redux'
 import R from 'ramda'
 
-import DataGroup from 'insights/DataGroup'
+import DataGroup from 'components/DataGroup'
 import ExitCodeList from './ExitCodeList'
 
 const ErrorTable = ({data, prettyFormat, total}) => {
