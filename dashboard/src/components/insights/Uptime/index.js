@@ -5,7 +5,7 @@ import R from 'ramda'
 import DataGroup from 'insights/DataGroup'
 import {getUptime} from 'modules/insights'
 
-const SamplesTable = ({data, prettyFormat}) => {
+const Uptime = ({data, prettyFormat}) => {
 
 	const groups = Object.keys(data)
 
@@ -52,7 +52,7 @@ const SamplesTable = ({data, prettyFormat}) => {
 			<thead>
 				<tr>
 					<th><DataGroup /></th>
-					<th>items</th>
+					<th>checks</th>
 					<th>uptime</th>
 				</tr>
 			</thead>
@@ -69,4 +69,4 @@ export default connect(({samples}) => {
 
 	return {data, prettyFormat}
 
-}, null)(SamplesTable)
+}, null)(Uptime)
