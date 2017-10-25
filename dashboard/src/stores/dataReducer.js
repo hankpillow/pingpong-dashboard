@@ -1,4 +1,4 @@
-import {defaultPayload, type as GroupAction} from 'insights/DataGroup/dispatcher'
+import {defaultPayload, type as GroupAction} from 'components/DataGroup/dispatcher'
 import {typeLoaded as APILoaded} from 'components/api/SelectTime/dispatcher'
 import {toDate} from 'modules/data'
 
