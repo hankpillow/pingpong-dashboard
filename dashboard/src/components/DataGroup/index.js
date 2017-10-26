@@ -2,8 +2,8 @@ import {h} from 'preact'
 import {connect} from 'preact-redux'
 import dispatcher from './dispatcher'
 
-const DataGroup = ({groupBy}) => {
-	return (<select onChange={groupBy}>
+const DataGroup = ({groupBy, name}) => {
+	return (<select key={name} onChange={groupBy(name)}>
 			<option value={'date'}>date</option>
 			<option value={'month'}>month</option>
 			<option value={'week-num'}>week number</option>
@@ -15,4 +15,8 @@ const DataGroup = ({groupBy}) => {
 		</select>)
 }
 
-export default connect(null, dispatcher)(DataGroup)
+export default connect((state, prop) => {
+	return {
+		name: prop.name || ''
+	}
+}, dispatcher)(DataGroup)

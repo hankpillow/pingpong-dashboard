@@ -1,9 +1,12 @@
 import {h} from 'preact'
 import {connect} from 'preact-redux'
 import R from 'ramda'
+import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
 
 import DataGroup from 'components/DataGroup'
 import ExitCodeList from './ExitCodeList'
+
+const name = 'errors'
 
 const ErrorTable = ({data, prettyFormat, total}) => {
 	const groups = Object.keys(data)
@@ -52,7 +55,7 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 		<table>
 			<thead>
 				<tr>
-					<th><DataGroup /></th>
+					<th><DataGroup name={name}/></th>
 					<th>checks</th>
 					<th>%</th>
 					<th>curl error code</th>
@@ -65,10 +68,12 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 
 const resolveFormat = R.curry((format, value) => format(value))
 
-export default connect(({samples, errors}) => {
+export default connect(({samples, errors, panes}) => {
+
+	const groupper = panes[name] || defaultGroup
 	const total = samples.data.length + errors.data.length
-	const data = errors.group.groupBy(errors.data)
-	const prettyFormat = resolveFormat(errors.group.groupPretty)
+	const data = groupper.groupBy(errors.data)
+	const prettyFormat = resolveFormat(groupper.groupPretty)
 
 	return {data, prettyFormat, total}
 

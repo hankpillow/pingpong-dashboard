@@ -1,8 +1,9 @@
 import {h} from 'preact'
-import {connect} from 'preact-redux'
 import DataGroup from 'components/DataGroup'
 
-const GenericSample = ({body}) => {
+const GenericSample = ({body, name}) => {
+
+	if (!name) throw new Error('missing component name')
 
 	if (body.length === 0) return ""
 
@@ -14,18 +15,14 @@ const GenericSample = ({body}) => {
 			</tr>)
 		})
 
-	const refreshData = (value) => {
-		console.log('chabnges' + value)
-	}
-
-	return (<div className={'insight'}>
-		<h2>%Name%</h2>
+	return (<div>
+		<h2>{name}</h2>
 		<table>
-			<thead>insights
+			<thead>
 				<tr>
-					<th><DataGroup /></th>
+					<th><DataGroup name={name}/></th>
 					<th>checks</th>
-					<th>%name%</th>
+					<th>%</th>
 				</tr>
 			</thead>
 			<tbody>{tbody}</tbody>

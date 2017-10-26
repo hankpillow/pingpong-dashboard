@@ -50,13 +50,15 @@ const resolvePayload = groupName => {
 }
 
 const defaultPayload = resolvePayload()
-const type = 'groupBy'
+const type = 'datagroup'
 
-const dispatcher = (dispatch) => {
+const dispatcher = dispatch => {
 	return {
-		groupBy: event => {
-			const payload = resolvePayload(event.target.value)
-			return dispatch({type, payload})
+		groupBy: name => event => {
+			return dispatch({
+					type: `${type}-${name}`,
+					payload: resolvePayload(event.target.value)
+				})
 		},
 	}
 }

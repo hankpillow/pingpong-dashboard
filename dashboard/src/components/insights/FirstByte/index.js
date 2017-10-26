@@ -3,16 +3,19 @@ import {connect} from 'preact-redux'
 import R from 'ramda'
 
 import GenericInsight from 'components/GenericInsight'
-import {getUptime} from 'modules/insights'
+import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
+import {getDowntime} from 'modules/insights'
 
 const resolveFormat = R.curry((format, value) => format(value))
+const name = 'first-byte'
 
-export default connect(({samples}) => {
+export default connect(({samples, panes}) => {
 	let faster, slower
 
 	// getting date from redux
-	const prettyFormat = resolveFormat(samples.group.groupPretty)
-	const data = samples.group.groupBy(samples.data)
+	const groupper = panes[name] || defaultGroup
+	const prettyFormat = resolveFormat(groupper.groupPretty)
+	const data = groupper.groupBy(samples.data)
 	const groups = Object.keys(data)
 
 	const body = groups.map(group => {
@@ -20,7 +23,7 @@ export default connect(({samples}) => {
 			const groupList = data[group]
 
 			const columnDate = prettyFormat(group)
-			const columnValue = getUptime(groupList) * 100
+			const columnValue = getDowntime(groupList) * 100
 			const columnChecks = groupList.length
 
 			faster = faster !== undefined ? Math.max(faster, columnValue) : columnValue
@@ -43,7 +46,7 @@ export default connect(({samples}) => {
 			return {columnDate, columnValue, columnChecks, statusClass}
 			})
 
-	return {body}
+	return {body, name}
 
 }, null)(GenericInsight)
 

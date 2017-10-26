@@ -2,71 +2,51 @@ import {h} from 'preact'
 import {connect} from 'preact-redux'
 import R from 'ramda'
 
-import DataGroup from 'components/DataGroup'
+import GenericInsight from 'components/GenericInsight'
+import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
 import {getUptime} from 'modules/insights'
 
-const Uptime = ({data, prettyFormat}) => {
+const resolveFormat = R.curry((format, value) => format(value))
+const name = 'uptime'
 
-	const groups = Object.keys(data)
-
-	if (groups.length === 0) return ""
-
+export default connect(({samples, panes}) => {
 	let faster, slower
+
+	// getting date from redux
+	const groupper = panes[name] || defaultGroup
+	const prettyFormat = resolveFormat(groupper.groupPretty)
+	const data = groupper.groupBy(samples.data)
+	const groups = Object.keys(data)
 
 	const body = groups.map(group => {
 
-			//group content and do all the math before rendering views
 			const groupList = data[group]
 
 			const columnDate = prettyFormat(group)
-			const columnUptime = getUptime(groupList) * 100
-			const columnItems = groupList.length
+			const columnValue = getUptime(groupList) * 100
+			const columnChecks = groupList.length
 
-			faster = faster !== undefined ? Math.max(faster, columnUptime) : columnUptime
-			slower = slower !== undefined ? Math.min(slower, columnUptime) : columnUptime
+			faster = faster !== undefined ? Math.max(faster, columnValue) : columnValue
+			slower = slower !== undefined ? Math.min(slower, columnValue) : columnValue
 
-			return {columnDate, columnUptime, columnItems}
+			return {columnDate, columnValue, columnChecks}
 
-		}).map(({columnDate, columnItems, columnUptime}, index) => {
+		}).map(({columnDate, columnChecks, columnValue}) => {
 
 			let statusClass = ''
 
 			if (slower == faster) {
 				statusClass = ''
-			} else if (columnUptime == slower) {
+			} else if (columnValue == slower) {
 				statusClass = 'higher'
-			} else if (columnUptime == faster) {
+			} else if (columnValue == faster) {
 				statusClass = 'lower'
 			}
 
-			return (<tr className={statusClass} key={'uptime-' + index}>
-				<td>{columnDate}</td>
-				<td>{columnItems}</td>
-				<td>{columnUptime}%</td>
-			</tr>)
-		})
+			return {columnDate, columnValue, columnChecks, statusClass}
+			})
 
-	return (<div className={'insight'}>
-		<h2>Uptime:</h2>
-		<table>
-			<thead>
-				<tr>
-					<th><DataGroup /></th>
-					<th>checks</th>
-					<th>uptime</th>
-				</tr>
-			</thead>
-			<tbody>{body}</tbody>
-		</table>
-	</div>)
-}
+	return {body, name}
 
-const resolveFormat = R.curry((format, value) => format(value))
+}, null)(GenericInsight)
 
-export default connect(({samples}) => {
-	const data = samples.group.groupBy(samples.data)
-	const prettyFormat = resolveFormat(samples.group.groupPretty)
-
-	return {data, prettyFormat}
-
-}, null)(Uptime)

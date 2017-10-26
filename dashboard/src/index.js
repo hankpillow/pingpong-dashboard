@@ -18,8 +18,8 @@ render(
 				<Api />
 			</header>
 			<main>
-				<Uptime />
 				<FirstByte />
+				<Uptime />
 				<ErrorTable />
 			</main>
 		</div>
