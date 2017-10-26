@@ -4,15 +4,15 @@ import R from 'ramda'
 
 import GenericInsight from 'components/GenericInsight'
 import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
-import {getDowntime} from 'modules/insights'
+import {getMedian} from 'modules/insights'
 
 const resolveFormat = R.curry((format, value) => format(value))
-const name = 'first-byte'
+const name = 'ttfb'
+const median = getMedian('time_starttransfer')
 
 export default connect(({samples, panes}) => {
 	let faster, slower
 
-	// getting date from redux
 	const groupper = panes[name] || defaultGroup
 	const prettyFormat = resolveFormat(groupper.groupPretty)
 	const data = groupper.groupBy(samples.data)
@@ -23,7 +23,7 @@ export default connect(({samples, panes}) => {
 			const groupList = data[group]
 
 			const columnDate = prettyFormat(group)
-			const columnValue = getDowntime(groupList) * 100
+			const columnValue = median(groupList).toPrecision(2)
 			const columnChecks = groupList.length
 
 			faster = faster !== undefined ? Math.max(faster, columnValue) : columnValue
@@ -46,7 +46,7 @@ export default connect(({samples, panes}) => {
 			return {columnDate, columnValue, columnChecks, statusClass}
 			})
 
-	return {body, name}
+	return {body, name, unit: 'sec'}
 
 }, null)(GenericInsight)
 

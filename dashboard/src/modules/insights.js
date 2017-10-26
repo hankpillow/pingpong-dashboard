@@ -2,7 +2,7 @@ import R from 'ramda'
 import {sortByProp} from './data'
 
 /* return look at <prop> on <list> and return the median value */
-const getMedian = (prop, list) => R.compose(R.median, R.pluck(prop), R.filter(R.has(prop)))(list)
+const getMedian = (prop) => R.compose(R.median, R.pluck(prop), R.filter(R.has(prop)))
 
 /* return the mean from given regex over http_code prop */
 const meanHttpCode = reg => R.compose(

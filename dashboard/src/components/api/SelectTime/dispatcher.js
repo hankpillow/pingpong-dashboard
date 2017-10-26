@@ -5,7 +5,6 @@ const typeError = 'error to load'
 const dispatcher = (dispatch) => {
 	return {
 			load: (query) => {
-				//TO-DO remove this hardcoded host
 				query += '?url=http://www.honda.com.br/motos/'
 				dispatch({query, type: typeFecth})
 

@@ -20,6 +20,7 @@ const SelectTime = ({busy, load}) => {
 				<select onChange={getSelected}>
 					<option value="">Select how far you data is...</option>
 					<option value="tail/100">last 100 samples</option>
+					<option value="tail/1000">last 1000 samples</option>
 					<option value="v2/back/30m">back 30min</option>
 					<option value="v2/back/24h">back 24h</option>
 					<option value="v2/back/7d">back one week</option>
