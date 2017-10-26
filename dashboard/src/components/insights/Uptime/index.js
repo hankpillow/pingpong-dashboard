@@ -12,7 +12,6 @@ const name = 'uptime'
 export default connect(({samples, panes}) => {
 	let faster, slower
 
-	// getting date from redux
 	const groupper = panes[name] || defaultGroup
 	const prettyFormat = resolveFormat(groupper.groupPretty)
 	const data = groupper.groupBy(samples.data)
@@ -23,7 +22,7 @@ export default connect(({samples, panes}) => {
 			const groupList = data[group]
 
 			const columnDate = prettyFormat(group)
-			const columnValue = getUptime(groupList) * 100
+			const columnValue = (getUptime(groupList) * 100).toPrecision(3)
 			const columnChecks = groupList.length
 
 			faster = faster !== undefined ? Math.max(faster, columnValue) : columnValue

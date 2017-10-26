@@ -4,11 +4,10 @@ import R from 'ramda'
 
 import GenericInsight from 'components/GenericInsight'
 import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
-import {getMedian} from 'modules/insights'
+import {getDowntime} from 'modules/insights'
 
 const resolveFormat = R.curry((format, value) => format(value))
-const name = 'ttfb'
-const median = getMedian('time_starttransfer')
+const name = 'downtime'
 
 export default connect(({samples, panes}) => {
 	let faster, slower
@@ -23,7 +22,7 @@ export default connect(({samples, panes}) => {
 			const groupList = data[group]
 
 			const columnDate = prettyFormat(group)
-			const columnValue = median(groupList).toPrecision(2)
+			const columnValue = (getDowntime(groupList) * 100).toPrecision(3)
 			const columnChecks = groupList.length
 
 			faster = faster !== undefined ? Math.min(faster, columnValue) : columnValue
@@ -46,7 +45,7 @@ export default connect(({samples, panes}) => {
 			return {columnDate, columnValue, columnChecks, statusClass}
 			})
 
-	return {body, name, unit: 'sec'}
+	return {body, name}
 
 }, null)(GenericInsight)
 

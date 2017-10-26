@@ -8,6 +8,7 @@ import store from 'stores'
 // components
 import Api from 'components/api'
 import Uptime from 'insights/Uptime'
+import Downtime from 'insights/Downtime'
 import ErrorTable from 'insights/ErrorTable'
 import FirstByte from 'insights/FirstByte'
 
@@ -18,6 +19,7 @@ render(
 				<Api />
 			</header>
 			<main>
+				<Downtime />
 				<FirstByte />
 				<Uptime />
 				<ErrorTable />

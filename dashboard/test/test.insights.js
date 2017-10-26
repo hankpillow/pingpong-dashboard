@@ -7,8 +7,8 @@ test('insight.getMedia', t => {
 		{a:20, b:10},
 		{a:10,url:'b'}
 	]
-	t.is(insights.getMedian('a', data), 10, 'handle avg values from given prop name')
-	t.is(insights.getMedian('b', data), 0, 'handle avg values from given prop name')
+	t.is(insights.getMedian('a')(data), 10, 'handle avg values from given prop name')
+	t.is(insights.getMedian('b')(data), 0, 'handle avg values from given prop name')
 })
 
 test('insight.getUptime', t => {
