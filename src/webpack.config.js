@@ -15,21 +15,21 @@ module.exports = function(env) {
 	let config = {
 
 		entry: {
-      dashboard: './src/dashboard'
+      dashboard: './dashboard'
 		},
 
 		output: {
-			path: path.resolve('./build'),
+			path: path.resolve('../build'),
 			filename: '[name].bundle.js'
 		},
 
 		resolve: {
 			modules: ['node_modules'],
 			alias: {
-				modules: path.resolve(__dirname + '/src/modules'),
-				stores: path.resolve(__dirname + '/src/stores'),
-				components: path.resolve(__dirname + '/src/components'),
-				insights: path.resolve(__dirname + '/src/components/insights')
+				modules: path.resolve(__dirname + '/modules'),
+				stores: path.resolve(__dirname + '/stores'),
+				components: path.resolve(__dirname + '/components'),
+				insights: path.resolve(__dirname + '/components/insights')
 			}
 		},
 
@@ -73,10 +73,11 @@ module.exports = function(env) {
 		config.devtool = 'source-map',
 		config.devServer = {
 			contentBase: path.join(__dirname),
+      port:"8080",
 			compress: false,
 			proxy: {
 				'/api': {
-					target: 'http://localhost:8000',
+					target: 'http://localhost:8080',
 					secure: false
 				}
 			}

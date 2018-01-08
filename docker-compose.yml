@@ -2,21 +2,21 @@ version: '3'
 
 services:
 
-  workspace:
+  nodejs:
 
-    image: pingpong-dashboard
+    image: node:latest
+    working_dir: /var/tmp
 
-    build:
-      context: .
+    command: ["npm"]
 
-    command: ["npm", "start"]
+    expose:
+      - "8080"
+
+    environment:
+      - SSH_AUTH_SOCK=/ssh_agent
 
     volumes:
-      - ./node_modules:/var/tmp/node_modules:rw
-      - ./.eslintrc.json:/var/tmp/.eslintrc.json
-      - ./package.json:/var/tmp/package.json
-      - ./package-lock.json:/var/tmp/package-lock.json
-      - ./webpack.config.js:/var/tmp/webpack.config.js
-      - ./src:/var/tmp/src
-      - ./test:/var/tmp/test
-      - ./mockdata:/var/tmp/mockdata
+      - $SSH_AUTH_SOCK:/ssh_agent
+      - ./.git:/var/tmp/.git:rw
+      - ./src:/var/tmp
+      - ./src/node_modules:/var/tmp/node_modules:rw
