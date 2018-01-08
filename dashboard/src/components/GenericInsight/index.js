@@ -1,28 +1,25 @@
 import {h} from 'preact'
 import DataGroup from 'components/DataGroup'
 
-const GenericSample = ({body, name, unit = '%'}) => {
+const GenericSample = ({name, data}) => {
 
-	if (!name) throw new Error('missing component name')
+	if (!data || !name) return "missing required data."
 
-	if (body.length === 0) return ""
+	const thead = data.header.map(val => <th>{val}</th>)
 
-	const tbody = body.map(({columnDate, columnChecks, columnValue, statusClass}, index) => {
-			return (<tr className={statusClass} key={name + '-row' + index}>
-				<td>{columnDate}</td>
-				<td>{columnChecks}</td>
-				<td>{columnValue}</td>
+	const tbody = data.rows.map((row, index) => {
+			return (<tr className={row.style} key={name + '-row-' + index}>
+				{row.data.map(val => <td>{val}</td>)}
 			</tr>)
 		})
 
-	return (<div>
+	return (<div key={name}>
 		<h2>{name}</h2>
 		<table>
 			<thead>
 				<tr>
 					<th><DataGroup name={name}/></th>
-					<th>checks</th>
-					<th>{unit}</th>
+					{thead}
 				</tr>
 			</thead>
 			<tbody>{tbody}</tbody>

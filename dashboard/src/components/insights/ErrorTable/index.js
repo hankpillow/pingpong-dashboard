@@ -6,9 +6,7 @@ import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
 import DataGroup from 'components/DataGroup'
 import ExitCodeList from './ExitCodeList'
 
-const name = 'errors'
-
-const ErrorTable = ({data, prettyFormat, total}) => {
+const ErrorTable = ({data, prettyFormat, total, name, title}) => {
 	const groups = Object.keys(data)
 
 	if (groups.length === 0) return ""
@@ -51,7 +49,7 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 		})
 
 	return (<div className={'insight'}>
-		<h2>Error list:</h2>
+		<h2>{title}</h2>
 		<table>
 			<thead>
 				<tr>
@@ -68,13 +66,13 @@ const ErrorTable = ({data, prettyFormat, total}) => {
 
 const resolveFormat = R.curry((format, value) => format(value))
 
-export default connect(({samples, errors, panes}) => {
+export default connect(({samples, errors, panes}, {name, title = ''}) => {
 
 	const groupper = panes[name] || defaultGroup
 	const total = samples.data.length + errors.data.length
 	const data = groupper.groupBy(errors.data)
 	const prettyFormat = resolveFormat(groupper.groupPretty)
 
-	return {data, prettyFormat, total}
+	return {data, prettyFormat, total, name, title}
 
 }, null)(ErrorTable)

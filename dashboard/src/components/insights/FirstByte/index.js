@@ -7,10 +7,9 @@ import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
 import {getMedian} from 'modules/insights'
 
 const resolveFormat = R.curry((format, value) => format(value))
-const name = 'ttfb'
 const median = getMedian('time_starttransfer')
 
-export default connect(({samples, panes}) => {
+export default connect(({samples, panes}, {name, title = ''}) => {
 	let faster, slower
 
 	const groupper = panes[name] || defaultGroup

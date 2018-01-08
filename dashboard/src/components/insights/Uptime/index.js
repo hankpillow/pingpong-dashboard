@@ -7,45 +7,52 @@ import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
 import {getUptime} from 'modules/insights'
 
 const resolveFormat = R.curry((format, value) => format(value))
-const name = 'uptime'
+
+const Uptime = ({rows}) => {
+	const data = {
+		header: ['%', 'checks'],
+		rows
+	}
+	return <GenericInsight name="Uptime" data={data} />
+}
 
 export default connect(({samples, panes}) => {
 	let faster, slower
 
-	const groupper = panes[name] || defaultGroup
+	const groupper = panes['Uptime'] || defaultGroup
 	const prettyFormat = resolveFormat(groupper.groupPretty)
 	const data = groupper.groupBy(samples.data)
 	const groups = Object.keys(data)
 
-	const body = groups.map(group => {
+	const rows = groups.map(group => {
 
 			const groupList = data[group]
 
 			const columnDate = prettyFormat(group)
-			const columnValue = (getUptime(groupList) * 100).toPrecision(3)
+			const columnPercent = (getUptime(groupList) * 100).toPrecision(3)
 			const columnChecks = groupList.length
 
-			faster = faster !== undefined ? Math.max(faster, columnValue) : columnValue
-			slower = slower !== undefined ? Math.min(slower, columnValue) : columnValue
+			faster = faster !== undefined ? Math.max(faster, columnPercent) : columnPercent
+			slower = slower !== undefined ? Math.min(slower, columnPercent) : columnPercent
 
-			return {columnDate, columnValue, columnChecks}
+			return [columnDate, columnPercent, columnChecks]
 
-		}).map(({columnDate, columnChecks, columnValue}) => {
+		}).map((columns) => {
 
-			let statusClass = ''
+			let style = ''
 
-			if (slower == faster) {
-				statusClass = ''
-			} else if (columnValue == slower) {
-				statusClass = 'higher'
-			} else if (columnValue == faster) {
-				statusClass = 'lower'
+			if (slower === faster) {
+				style = ''
+			} else if (columns[1] === slower) {
+				style = 'higher'
+			} else if (columns[1] === faster) {
+				style = 'lower'
 			}
 
-			return {columnDate, columnValue, columnChecks, statusClass}
+			return {style, data:columns}
 			})
 
-	return {body, name}
+	return {rows}
 
-}, null)(GenericInsight)
+}, null)(Uptime)
 

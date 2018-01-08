@@ -7,9 +7,8 @@ import {defaultPayload as defaultGroup} from 'components/DataGroup/dispatcher'
 import {getDowntime} from 'modules/insights'
 
 const resolveFormat = R.curry((format, value) => format(value))
-const name = 'downtime'
 
-export default connect(({samples, panes}) => {
+export default connect(({samples, panes}, {name, title = ''}) => {
 	let faster, slower
 
 	const groupper = panes[name] || defaultGroup
@@ -45,7 +44,7 @@ export default connect(({samples, panes}) => {
 			return {columnDate, columnValue, columnChecks, statusClass}
 			})
 
-	return {body, name}
+	return {body, name, title}
 
 }, null)(GenericInsight)
 
