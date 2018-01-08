@@ -2,7 +2,7 @@ version: '3'
 
 services:
 
-  nodejs:
+  app:
 
     image: node:latest
     working_dir: /var/tmp
@@ -17,6 +17,6 @@ services:
 
     volumes:
       - $SSH_AUTH_SOCK:/ssh_agent
-      - ./src:/var/tmp
+      - ./app:/var/tmp
       - ./.git:/var/tmp/.git:rw
-      - ./src/node_modules:/var/tmp/node_modules:rw
+      - ./app/node_modules:/var/tmp/node_modules:rw
