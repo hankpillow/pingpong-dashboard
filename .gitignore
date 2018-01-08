@@ -55,3 +55,4 @@ htmlcov
 .bootstrap
 .appveyor.token
 *.bak
+mockdata/
