@@ -17,6 +17,6 @@ services:
 
     volumes:
       - $SSH_AUTH_SOCK:/ssh_agent
-      - ./.git:/var/tmp/.git:rw
       - ./src:/var/tmp
+      - ./.git:/var/tmp/.git:rw
       - ./src/node_modules:/var/tmp/node_modules:rw
