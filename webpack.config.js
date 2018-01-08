@@ -15,11 +15,11 @@ module.exports = function(env) {
 	let config = {
 
 		entry: {
-			dashboard: './src'
+      dashboard: './src/dashboard'
 		},
 
 		output: {
-			path: path.resolve('./'),
+			path: path.resolve('./build'),
 			filename: '[name].bundle.js'
 		},
 

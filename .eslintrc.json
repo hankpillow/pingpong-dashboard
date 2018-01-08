@@ -16,7 +16,6 @@
   },
   "env": {
     "browser": true,
-    "ava": true,
     "node": true,
     "es6": true
   },

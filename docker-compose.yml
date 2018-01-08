@@ -1,8 +1,16 @@
 version: '3'
 
 services:
-  node:
-    image: node:latest
+
+  workspace:
+
+    image: pingpong-dashboard
+
+    build:
+      context: .
+
+    command: ["npm", "start"]
+
     volumes:
       - ./node_modules:/var/tmp/node_modules:rw
       - ./.eslintrc.json:/var/tmp/.eslintrc.json
