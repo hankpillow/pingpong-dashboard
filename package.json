@@ -2,7 +2,10 @@
   "name": "pingpong-dashboard",
   "version": "0.1.0",
   "main": "index.js",
-  "repository": "github.com:hankpillow/pingpong-dashboard.git",
+  "repository": {
+    "type": "git",
+    "url": "github.com:hankpillow/pingpong-dashboard.git"
+  },
   "author": "Igor Almeida <igor.p.almeida@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -52,5 +55,11 @@
     "redux-thunk": "^2.2.0",
     "webpack": "^3.2.0",
     "webpack-dev-server": "^2.5.1"
-  }
+  },
+  "description": "",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "keywords": []
 }
