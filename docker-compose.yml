@@ -1,23 +1,7 @@
 version: '3'
 
 services:
-
-  core:
-    image: mrboots/pingpong:latest
+  node:
+    image: node:latest
     volumes:
-      - ./URLS:/var/URLS
-      - ./log:/var/log:rw
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - CRON_STRINGS=*/10 * * * * /bin/sh /scripts/run.sh
-
-  server.local:
-    image: pingpong-api
-    build:
-      context: server
-      dockerfile: Dockerfile
-    ports:
-      - 8000:8000
-    volumes:
-      - ./server/:/var/pingpong
-      - ./log/pingpong.log:/var/DB
+      - ./:/var/www:rw
