@@ -6,11 +6,10 @@ services:
 
     image: node:latest
     working_dir: /var/tmp
-
-    command: ["npm"]
+    entrypoint: "npm start"
 
     expose:
-      - "8080"
+      - "3000"
 
     environment:
       - SSH_AUTH_SOCK=/ssh_agent
@@ -18,14 +17,14 @@ services:
     volumes:
       - $SSH_AUTH_SOCK:/ssh_agent
       - ./api:/var/tmp
-      # - ./.git:/var/tmp/.git:rw
       - ./api/node_modules:/var/tmp/node_modules:rw
+
   app:
 
     image: node:latest
     working_dir: /var/tmp
 
-    command: ["npm"]
+    entrypoint: "npm start"
 
     expose:
       - "8080"
@@ -36,5 +35,4 @@ services:
     volumes:
       - $SSH_AUTH_SOCK:/ssh_agent
       - ./app:/var/tmp
-      # - ./.git:/var/tmp/.git:rw
       - ./app/node_modules:/var/tmp/node_modules:rw
