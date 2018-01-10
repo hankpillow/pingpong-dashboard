@@ -2,37 +2,16 @@ version: '3'
 
 services:
 
-  api:
-
-    image: node:latest
-    working_dir: /var/tmp
-    entrypoint: "npm start"
-
-    expose:
-      - "3000"
-
-    environment:
-      - SSH_AUTH_SOCK=/ssh_agent
-
-    volumes:
-      - $SSH_AUTH_SOCK:/ssh_agent
-      - ./api:/var/tmp
-      - ./api/node_modules:/var/tmp/node_modules:rw
-
   app:
 
-    image: node:latest
+    image: node:9
     working_dir: /var/tmp
 
-    entrypoint: "npm start"
+    entrypoint: "npm"
 
     expose:
       - "8080"
 
-    environment:
-      - SSH_AUTH_SOCK=/ssh_agent
-
     volumes:
-      - $SSH_AUTH_SOCK:/ssh_agent
       - ./app:/var/tmp
-      - ./app/node_modules:/var/tmp/node_modules:rw
+      - ./node_modules:node_modules:rw

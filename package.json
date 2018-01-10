@@ -1,7 +1,6 @@
 {
   "name": "pingpong-dashboard",
   "version": "0.1.0",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "github.com:hankpillow/pingpong-dashboard.git"
@@ -10,12 +9,8 @@
   "license": "MIT",
   "scripts": {
     "test": "ava",
-    "prebuild": "npm test",
-    "preversion": "npm test && git pull --tags",
-    "version": "npm run build",
-    "postversion": "git push origin --tags",
-    "build": "webpack --env=production",
-    "start": "webpack-dev-server --inline --hot --env=development"
+    "dev": "nodemon ./server.js --exec babel-node",
+    "_start": "webpack-dev-server --inline --hot --env=development"
   },
   "ava": {
     "require": [
@@ -28,12 +23,22 @@
   "babel": {
     "presets": [
       "env"
-    ],
-    "plugins": [
-      "transform-object-rest-spread"
     ]
   },
+  "dependencies": {
+    "apollo-server-express": "^1.3.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "graphql": "^0.11.7",
+    "graphql-tools": "^2.13.0",
+    "node-fetch": "^1.7.3"
+  },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.12.1"
+  },
+  "___devDependencies": {
     "ava": "^0.21.0",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.1.1",
@@ -55,9 +60,5 @@
     "webpack-dev-server": "^2.5.1"
   },
   "description": "",
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {},
   "keywords": []
 }
