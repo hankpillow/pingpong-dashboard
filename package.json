@@ -8,7 +8,7 @@
   "author": "Igor Almeida <igor.p.almeida@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "ava",
+    "_test": "ava",
     "dev": "nodemon ./server.js --exec babel-node",
     "_start": "webpack-dev-server --inline --hot --env=development"
   },
@@ -23,42 +23,27 @@
   "babel": {
     "presets": [
       "env"
+    ],
+    "plugins": [
+      "transform-object-rest-spread",
+      "transform-async-to-generator"
     ]
   },
   "dependencies": {
     "apollo-server-express": "^1.3.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "graphql": "^0.11.7",
     "graphql-tools": "^2.13.0",
-    "node-fetch": "^1.7.3"
+    "node-fetch": "^1.7.3",
+    "nodemon": "^1.12.1",
+    "ramda": "^0.25.0"
   },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "nodemon": "^1.12.1"
-  },
-  "___devDependencies": {
-    "ava": "^0.21.0",
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^7.1.1",
-    "babel-loader": "^7.1.1",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "eslint": "^4.3.0",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-react": "^7.1.0",
-    "preact": "^8.2.1",
-    "preact-redux": "^2.0.2",
-    "ramda": "^0.24.1",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "webpack": "^3.2.0",
-    "webpack-dev-server": "^2.5.1"
-  },
+  "devDependencies": {},
   "description": "",
   "keywords": []
 }

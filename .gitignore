@@ -3,3 +3,4 @@ mockdata
 build
 *-lock.json*
 .cache
+samples.json

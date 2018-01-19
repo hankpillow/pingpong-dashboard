@@ -19,3 +19,7 @@ server.listen(GRAPHQL_PORT, () =>
     `GraphiQL is now running on http://localhost:${GRAPHQL_PORT}/graphiql`,
   )
 );
+
+
+// fetch('http://localhost:3000/graphql')
+

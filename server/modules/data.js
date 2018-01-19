@@ -41,11 +41,6 @@ const groupByMonth = groupBy('date',BY_MONTH)
 const groupByYear = groupBy('date',BY_YEAR)
 const groupByTimeFrame = groupBy('date',BY_TIME_FRAME)
 
-const filterError = R.compose(R.filter(R.propEq('type','error')), R.filter(R.is(Object)))
-const filterSample = R.compose(R.filter(R.propEq('type','sample')), R.filter(R.is(Object)))
-
-const pluck = (prop, list) => R.pluck(prop)(list)
-
 const toDate = R.compose(
 	R.map(item => ({...item, date:new Date(item.date)})),
 	R.filter(item => !isNaN(Date.parse(item.date))),
@@ -62,12 +57,7 @@ const sortByProp = (prop, fn = (a,b) => a > b) => {
 	)
 }
 
-/* all data action are made for lists.
- * for single units you can use the proxy*/
-const single = R.curry((fn, data) => fn([data])[0])
-
 export {
-	toDate, single, pluck, sortByProp,
-	filterError, filterSample,
+	toDate, sortByProp,
 	groupByDate, groupByMonth, groupByWeekNum, groupByWeekDay, groupByDay, groupByYear, groupByHour, groupByTimeFrame
 }
