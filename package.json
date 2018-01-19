@@ -8,9 +8,8 @@
   "author": "Igor Almeida <igor.p.almeida@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "_test": "ava",
-    "dev": "nodemon ./server.js --exec babel-node",
-    "_start": "webpack-dev-server --inline --hot --env=development"
+    "test": "echo ava",
+    "server": "nodemon ./src/server.js --exec babel-node"
   },
   "ava": {
     "require": [

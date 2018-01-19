@@ -3,7 +3,7 @@ import fs from 'fs'
 import {normalize} from 'path'
 import {curry, pluck} from 'ramda'
 
-const db = normalize(__dirname + '/../samples.json')
+const db = normalize(__dirname + '/../../samples.json')
 
 const loadAsyncFile = promisify(fs.readFile)
 
