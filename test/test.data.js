@@ -1,32 +1,5 @@
 import test from 'ava'
-import * as d from '../modules/data'
-
-test('data.filterSample', t => {
-	const data = [
-		null,'',false,true,{},
-		{type:'sample',a:2},
-		{type:'sample',a:1},
-		{type:'error'}
-	]
-	const size = data.length
-	t.deepEqual(d.filterSample(data)[0], data[5], 'should filter sample')
-	t.is(d.filterSample(data).length, 2, 'should filter sample')
-	t.deepEqual(data.length, size, 'should not change origin')
-})
-
-test('data.filterError', t => {
-	const data = [
-		null,'',false,true,{},
-		{type:'sample',a:2},
-		{type:'sample',a:1},
-		{type:'error'}
-	]
-	const size = data.length
-	t.deepEqual(d.filterError(data)[0], data[data.length-1], 'should filter error')
-	t.is(d.filterError(data).length, 1, 'should filter error')
-	t.is(data.length, size, 'should not change origin')
-})
-
+import * as d from '../src/modules/data'
 
 test('data.groupByHour', t => {
 	const data = [

@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as timeformat from '../modules/timeformat'
+import * as timeformat from '../src/modules/timeformat'
 
 const zero = new Date('2017-7-20 15:30:00')
 
