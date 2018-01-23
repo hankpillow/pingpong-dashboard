@@ -5,11 +5,11 @@
     "type": "git",
     "url": "github.com:hankpillow/pingpong-dashboard.git"
   },
-  "author": "Igor Almeida <igor.p.almeida@gmail.com>",
+  "author": "Igor Almeida",
   "license": "MIT",
   "scripts": {
     "test": "ava",
-    "server": "nodemon ./src/server.js --exec babel-node"
+    "start": "nodemon -w ./src ./src/index.js --exec babel-node"
   },
   "ava": {
     "require": [

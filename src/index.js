@@ -1,6 +1,6 @@
 import {json} from 'body-parser';
-import resolvers from './server/resolvers'
-import typeDefs from './server/typeDefs'
+import resolvers from './api/resolvers'
+import typeDefs from './api/typeDefs'
 import express from 'express';
 
 import {makeExecutableSchema} from 'graphql-tools';
