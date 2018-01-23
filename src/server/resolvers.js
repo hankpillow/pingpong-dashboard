@@ -1,35 +1,47 @@
 import {promisify} from 'util'
 import fs from 'fs'
 import {normalize} from 'path'
-import {curry, pluck} from 'ramda'
+import {curry, pluck, pick} from 'ramda'
 
-const db = normalize(__dirname + '/../../samples.json')
+const dbPath = normalize(__dirname + '/../../samples.json')
 
 const loadAsyncFile = promisify(fs.readFile)
 
-const reduceProps = curry((props, data) => pick(props, data))
+const filterPage = curry((url, data) => data.filter(item => item.url_effective === url))
 
-const serializeSampleItem = curry((prop, list) => ({
-  prop: prop,
+const reduceProps = curry((props, data) => data.map(item => pick(props, item)))
+
+const getSeriesItem = curry((url, prop, list) => ({
+  prop, url,
   dates: pluck('date', list),
   series: pluck(prop, list)
 }))
 
-const limitResult = curry((limit, {prop, dates, series}) => ({
-  prop,
-  dates: dates.slice(limit),
-  series: series.slice(limit)
+const uniqueValues = list => list.filter((val, pos) => list.indexOf(val) === pos)
+
+const limitResult = curry((limit, sample) => ({
+  ...sample,
+  dates: sample.dates.slice(limit),
+  series: sample.series.slice(limit)
 }))
 
 const Query = {
 
-  uptime: (root, {prop, limit}) =>
-    loadAsyncFile(db)
+  series(root, {url, prop, limit}) {
+    return loadAsyncFile(dbPath)
       .then(JSON.parse)
-      .then(Promise.resolve(reduceProps([prop, 'date'])))
-      .then(serializeSampleItem(prop))
+      .then(filterPage(url))
+      .then(reduceProps([prop, 'date']))
+      .then(getSeriesItem(url, prop))
       .then(limitResult(limit < 0 ? limit : limit * -1))
+  }
+  , pages() {
+    return loadAsyncFile(dbPath)
+			.then(JSON.parse)
+      .then(pluck('url_effective'))
+			.then(uniqueValues)
+  }
 
 }
 
-export default { Query }
+export default {Query}
