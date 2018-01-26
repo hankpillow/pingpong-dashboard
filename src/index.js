@@ -1,22 +1,15 @@
-import {json} from 'body-parser';
-import resolvers from './api/resolvers'
-import typeDefs from './api/typeDefs'
-import express from 'express';
+import {h, render} from 'preact';
 
-import {makeExecutableSchema} from 'graphql-tools';
-import {graphqlExpress, graphiqlExpress} from 'apollo-server-express';
+let root;
+function init() {
+	const Dashboard = require('components/dashboard').default;
+	root = render(<Dashboard />, document.body, root);
+}
 
-const schema = makeExecutableSchema({typeDefs, resolvers});
+// in development, set up HMR:
+if (module.hot) {
+	//require('preact/devtools');   // turn this on if you want to enable React DevTools!
+	module.hot.accept('components/dashboard', () => requestAnimationFrame(init) );
+}
 
-const GRAPHQL_PORT = 3000;
-const server = express();
-
-server.use('/api', json(), graphqlExpress({schema}));
-server.use('/graphiql', graphiqlExpress({endpointURL: '/api'}));
-
-server.listen(GRAPHQL_PORT, () =>
-  console.log(
-    `GraphiQL is now running on http://localhost:${GRAPHQL_PORT}/graphiql`,
-  )
-);
-
+init();
