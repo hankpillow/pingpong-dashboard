@@ -8,7 +8,7 @@ function init() {
 
 // in development, set up HMR:
 if (module.hot) {
-	//require('preact/devtools');   // turn this on if you want to enable React DevTools!
+  // const dt = require('preact').devtools;
 	module.hot.accept('components/dashboard', () => requestAnimationFrame(init) );
 }
 

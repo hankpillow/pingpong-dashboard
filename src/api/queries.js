@@ -12,7 +12,7 @@ const series = `
 const pages = `query pages { pages }`;
 
 const StringDataQueries = {
-  uptime
+  pages
 }
 
 const FloatDataQuerues = {

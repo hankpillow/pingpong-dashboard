@@ -6,12 +6,27 @@ import CreateReport from 'components/create-report'
 
 const dashReducer = (state = [], action = {type:null}) => {
   switch (action.type) {
-    case 'add': return [...state, action.payload]
-    default: return state
+    case 'add url':
+      return {
+        ...state,
+        urls: action.payload
+      }
+    case 'add report':
+      return {
+        ...state,
+        reports:[...state.reports, action.payload]
+      }
+    default:
+      return state
   }
 }
 
-const store = createStore(dashReducer,
+const defaultState = {
+  reports:[],
+  urls:[]
+}
+
+const store = createStore(dashReducer, defaultState,
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
