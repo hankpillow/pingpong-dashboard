@@ -1,7 +1,6 @@
 const series = `
-	query series($url: String, $metric: FloatProps, $limit: Int = 1000) {
-		series (url: $url, prop: $metric, limit: $limit) {
-			url
+	query series($id: ID, $metric: FloatProps, $limit: Int = 1000) {
+		series (id: $id, prop: $metric, limit: $limit) {
 			prop
 			dates
 			series
@@ -9,7 +8,9 @@ const series = `
 	}
 `;
 
-const pages = `query pages { pages }`;
+const pages = `query pages {
+  pages
+}`;
 
 const StringDataQueries = {
   pages

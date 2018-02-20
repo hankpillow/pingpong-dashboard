@@ -8,15 +8,20 @@ enum FloatProps { ${EnumFloatProps.map(val => val).join('\n')} }
 enum Metric { ${EnumMetrics.map(val => val).join('\n')} }
 
 type SeriesItem {
-  url: String!
+  id: ID!
   prop: String!
   series: [Float!]
   dates: [String!]
 }
 
+type Page {
+  id: ID!
+  url: String!
+}
+
 type Query {
-  pages : [String]
-  series (url: String, prop: FloatProps, limit: Int = 10) : SeriesItem!
+  pages : [Page]
+  series (id: String, prop: FloatProps, limit: Int = 10) : SeriesItem!
 }
 `;
 
